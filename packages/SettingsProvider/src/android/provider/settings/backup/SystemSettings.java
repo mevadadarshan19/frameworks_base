@@ -101,5 +101,6 @@ public class SystemSettings {
         Settings.System.USE_OLD_MOBILETYPE,
         Settings.System.QS_FOOTER_TEXT_SHOW,
         Settings.System.QS_FOOTER_TEXT_STRING,
+        Settings.System.STATUSBAR_NOTIF_COUNT,
     };
 }
