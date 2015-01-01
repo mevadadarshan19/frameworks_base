@@ -227,5 +227,6 @@ public class SecureSettings {
         Settings.Secure.POWER_MENU_HIDE_ON_SECURE,
         Settings.Secure.SECURE_LOCKSCREEN_QS_DISABLED,
         Settings.Secure.SHOW_BACK_ARROW_GESTURE,
+        Settings.Secure.QUICK_SETTINGS_TILES_VIBRATE,
     };
 }
