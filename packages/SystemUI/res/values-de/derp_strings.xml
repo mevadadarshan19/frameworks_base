@@ -14,4 +14,9 @@
     <!-- PowerShare QS tile -->
     <string name="quick_settings_powershare_label">Battery Share</string>
     <string name="quick_settings_powershare_enabled_label">Battery Share ist aktiviert</string>
+
+    <!-- Sync QS tile -->
+    <string name="quick_settings_sync_label">Synchronisation</string>
+    <string name="accessibility_quick_settings_sync_off">Synchronisierung aus.</string>
+    <string name="accessibility_quick_settings_sync_on">Synchronisierung an.</string>
 </resources>
