@@ -45,4 +45,7 @@
     <string name="qs_data_switch_changed_1">Daten-SIM-Karte zu SIM 1 wechseln.</string>
     <string name="qs_data_switch_changed_2">Daten-SIM-Karte zu SIM 2 wechseln.</string>
 
+    <!-- USB tethering QS tile -->
+    <string name="quick_settings_usb_tether_label">USB-Tethering</string>
+
 </resources>
