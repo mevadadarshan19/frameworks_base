@@ -42,6 +42,7 @@ import com.android.systemui.qs.tiles.DataSaverTile;
 import com.android.systemui.qs.tiles.DeviceControlsTile;
 import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
+import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.InternetTile;
 import com.android.systemui.qs.tiles.LiveDisplayTile;
@@ -110,6 +111,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<ReadingModeTile> mReadingModeTileProvider;
     private final Provider<AntiFlickerTile> mAntiFlickerTileProvider;
     private final Provider<PowerShareTile> mPowerShareTileProvider;
+    private final Provider<HeadsUpTile> mHeadsUpTileProvider;
 
     private final Lazy<QSHost> mQsHostLazy;
     private final Provider<CustomTile.Builder> mCustomTileBuilderProvider;
@@ -153,7 +155,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<LiveDisplayTile> liveDisplayTileProvider,
             Provider<ReadingModeTile> readingModeTileProvider,
             Provider<AntiFlickerTile> antiFlickerTileProvider,
-            Provider<PowerShareTile> powerShareTileProvider) {
+            Provider<PowerShareTile> powerShareTileProvider,
+            Provider<HeadsUpTile> headsUpTileProvider) {
         mQsHostLazy = qsHostLazy;
         mCustomTileBuilderProvider = customTileBuilderProvider;
 
@@ -193,6 +196,7 @@ public class QSFactoryImpl implements QSFactory {
         mReadingModeTileProvider = readingModeTileProvider;
         mAntiFlickerTileProvider = antiFlickerTileProvider;
         mPowerShareTileProvider = powerShareTileProvider;
+        mHeadsUpTileProvider = headsUpTileProvider;
     }
 
     /** Creates a tile with a type based on {@code tileSpec} */
@@ -280,6 +284,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mAntiFlickerTileProvider.get();
             case "powershare":
                 return mPowerShareTileProvider.get();
+            case "heads_up":
+                return mHeadsUpTileProvider.get();
         }
 
         // Custom tiles
