@@ -192,4 +192,7 @@
         =1 {# Gerät verbunden}
         other {# Geräte verbunden}
     }</string>
+
+    <!-- Volume panel QS tile -->
+    <string name="quick_settings_volume_panel_label">Lautstärke</string>
 </resources>
