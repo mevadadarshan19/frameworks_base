@@ -190,4 +190,7 @@
 
     <!-- Autobrightness tile -->
     <string name="quick_settings_autobrightness_label">Automatische Helligkeit</string>
+
+    <!-- Volume panel QS tile -->
+    <string name="quick_settings_volume_panel_label">Lautstärke</string>
 </resources>

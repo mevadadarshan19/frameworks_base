@@ -211,4 +211,7 @@
 
     <!-- Autobrightness tile -->
     <string name="quick_settings_autobrightness_label">Auto brightness</string>
+
+    <!-- Volume panel QS tile -->
+    <string name="quick_settings_volume_panel_label">Volume panel</string>
 </resources>
