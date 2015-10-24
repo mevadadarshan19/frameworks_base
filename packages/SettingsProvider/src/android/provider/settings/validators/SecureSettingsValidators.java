@@ -364,5 +364,6 @@ public class SecureSettingsValidators {
         VALIDATORS.put(Secure.GESTURE_NAVBAR_LENGTH_MODE, new InclusiveIntegerRangeValidator(0, 3));
         VALIDATORS.put(Secure.VOLUME_LINK_NOTIFICATION, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.LOCKSCREEN_PIN_SCRAMBLE_LAYOUT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.POWER_MENU_HIDE_ON_SECURE, BOOLEAN_VALIDATOR);
     }
 }
