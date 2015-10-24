@@ -210,5 +210,6 @@ public class SecureSettings {
         Settings.Secure.STATUS_BAR_SHOW_VIBRATE_ICON,
         Settings.Secure.GESTURE_NAVBAR_LENGTH_MODE,
         Settings.Secure.LOCKSCREEN_PIN_SCRAMBLE_LAYOUT,
+        Settings.Secure.POWER_MENU_HIDE_ON_SECURE,
     };
 }
