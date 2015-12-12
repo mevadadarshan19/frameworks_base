@@ -33,6 +33,13 @@
     <string name="global_action_reboot_systemui">System UI</string>
     <string name="global_action_settings">Einstellungen</string>
 
+    <!-- Ambient display QS tile -->
+    <string name="quick_settings_ambient_display_label">Inaktivitätsdisplay</string>
+    <string name="accessibility_quick_settings_ambient_display_off">Inaktivitätsdisplay aus.</string>
+    <string name="accessibility_quick_settings_ambient_display_on">Inaktivitätsdisplay an.</string>
+    <string name="accessibility_quick_settings_ambient_display_changed_off">Inaktivitätsdisplay ausgeschaltet.</string>
+    <string name="accessibility_quick_settings_ambient_display_changed_on">Inaktivitätsdisplay eingeschaltet.</string>
+
     <!-- Anti flicker QS tile -->
     <string name="quick_settings_anti_flicker">Anti-Flimmern</string>
 
