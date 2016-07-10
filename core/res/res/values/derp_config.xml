@@ -230,4 +230,7 @@
       <item>org.pixelexperience.faceunlock</item>
   </string-array>
 
+  <!-- Whether device has dash charging support -->
+  <bool name="config_hasDashCharger">false</bool>
+
 </resources>
