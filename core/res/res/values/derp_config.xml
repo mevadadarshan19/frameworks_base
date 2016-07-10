@@ -289,4 +289,7 @@
   <!-- Wether to handle audio direction changes between major call states -->
   <bool name="config_handleAudioDirectionChangesBetweenCallStateChanges">true</bool>
 
+  <!-- Whether device has dash charging support -->
+  <bool name="config_hasDashCharger">false</bool>
+
 </resources>
