@@ -58,6 +58,7 @@ import com.android.systemui.qs.tiles.ReduceBrightColorsTile;
 import com.android.systemui.qs.tiles.ReadingModeTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.ScreenRecordTile;
+import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UiModeNightTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
 import com.android.systemui.qs.tiles.WifiTile;
@@ -112,6 +113,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<AntiFlickerTile> mAntiFlickerTileProvider;
     private final Provider<PowerShareTile> mPowerShareTileProvider;
     private final Provider<HeadsUpTile> mHeadsUpTileProvider;
+    private final Provider<SyncTile> mSyncTileProvider;
 
     private final Lazy<QSHost> mQsHostLazy;
     private final Provider<CustomTile.Builder> mCustomTileBuilderProvider;
@@ -156,7 +158,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<ReadingModeTile> readingModeTileProvider,
             Provider<AntiFlickerTile> antiFlickerTileProvider,
             Provider<PowerShareTile> powerShareTileProvider,
-            Provider<HeadsUpTile> headsUpTileProvider) {
+            Provider<HeadsUpTile> headsUpTileProvider,
+            Provider<SyncTile> syncTileProvider) {
         mQsHostLazy = qsHostLazy;
         mCustomTileBuilderProvider = customTileBuilderProvider;
 
@@ -197,6 +200,7 @@ public class QSFactoryImpl implements QSFactory {
         mAntiFlickerTileProvider = antiFlickerTileProvider;
         mPowerShareTileProvider = powerShareTileProvider;
         mHeadsUpTileProvider = headsUpTileProvider;
+        mSyncTileProvider = syncTileProvider;
     }
 
     /** Creates a tile with a type based on {@code tileSpec} */
@@ -286,6 +290,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mPowerShareTileProvider.get();
             case "heads_up":
                 return mHeadsUpTileProvider.get();
+            case "sync":
+                return mSyncTileProvider.get();
         }
 
         // Custom tiles
