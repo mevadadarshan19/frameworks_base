@@ -124,5 +124,6 @@ public class SystemSettings {
         Settings.System.RINGTONE_VIBRATION_PATTERN,
         Settings.System.CUSTOM_RINGTONE_VIBRATION_PATTERN,
         Settings.System.DISABLE_RIPPLE_EFFECT,
+        Settings.System.LOCK_HIDE_STATUS_BAR,
     };
 }
