@@ -79,6 +79,18 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:clipChildren="false">
+
+                    <com.android.systemui.derp.logo.LogoImageView
+                        android:id="@+id/statusbar_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingStart="@dimen/status_bar_left_clock_starting_padding"
+                        android:paddingEnd="@dimen/status_bar_left_clock_end_padding"
+                        android:gravity="center_vertical|start"
+                        android:scaleType="center"
+                        android:visibility="gone" />
+
                     <ViewStub
                         android:id="@+id/operator_name"
                         android:layout_width="wrap_content"
@@ -136,7 +148,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:orientation="horizontal"
                 android:gravity="center_vertical|end"
                 android:clipChildren="false">
 
@@ -148,6 +159,7 @@
                     layout="@layout/status_bar_user_chip_container" />
 
                 <include layout="@layout/system_icons" />
+
             </com.android.keyguard.AlphaOptimizedLinearLayout>
         </FrameLayout>
     </LinearLayout>
