@@ -152,6 +152,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private View mCustomCarrierLabel;
     private int mShowCarrierLabel;
     private LyricController mLyricController;
+    private View mLeftLogo;
 
     private List<String> mBlockedIcons = new ArrayList<>();
     private Map<Startable, Startable.State> mStartableStates = new ArrayMap<>();
@@ -323,6 +324,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mClockController = mStatusBar.getClockController();
         mCustomCarrierLabel = mStatusBar.findViewById(R.id.statusbar_carrier_text);
         mOngoingCallChip = mStatusBar.findViewById(R.id.ongoing_call_chip);
+        mLeftLogo = mStatusBar.findViewById(R.id.statusbar_logo);
         showEndSideContent(false);
         showClock(false);
         initOperatorName();
@@ -668,10 +670,12 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     public void hideNotificationIconArea(boolean animate) {
+        animateHide(mLeftLogo, animate);
         animateHide(mNotificationIconAreaInner, animate);
     }
 
     public void showNotificationIconArea(boolean animate) {
+        animateShow(mLeftLogo, animate);
         animateShow(mNotificationIconAreaInner, animate);
     }
 
