@@ -102,5 +102,6 @@ public class SystemSettings {
         Settings.System.QS_FOOTER_TEXT_SHOW,
         Settings.System.QS_FOOTER_TEXT_STRING,
         Settings.System.STATUSBAR_NOTIF_COUNT,
+        Settings.System.SENSOR_BLOCK,
     };
 }
