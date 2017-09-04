@@ -89,5 +89,11 @@ public class SystemSettings {
         Settings.System.DISPLAY_COLOR_MODE,
         Settings.System.ALARM_ALERT,
         Settings.System.NOTIFICATION_LIGHT_PULSE,
+        Settings.System.BATTERY_LIGHT_ALLOW_ON_DND,
+        Settings.System.BATTERY_LIGHT_LOW_BLINKING,
+        Settings.System.BATTERY_LIGHT_LOW_COLOR,
+        Settings.System.BATTERY_LIGHT_MEDIUM_COLOR,
+        Settings.System.BATTERY_LIGHT_FULL_COLOR,
+        Settings.System.BATTERY_LIGHT_REALLYFULL_COLOR,
     };
 }
