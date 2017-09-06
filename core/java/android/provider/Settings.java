@@ -5942,6 +5942,12 @@ public final class Settings {
         public static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
 
         /**
+         * Whether to show QS panel footer warnings like for active VPN
+         * @hide
+         */
+        public static final String QS_FOOTER_WARNINGS = "qs_footer_warnings";
+
+        /**
          * IMPORTANT: If you add a new public settings you also have to add it to
          * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
          * it to PRIVATE_SETTINGS below. Also add a validator that can validate
