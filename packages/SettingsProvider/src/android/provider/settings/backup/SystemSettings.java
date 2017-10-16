@@ -121,5 +121,6 @@ public class SystemSettings {
         Settings.System.LOCK_HIDE_STATUS_BAR,
         Settings.System.KEYGUARD_QUICK_TOGGLES_NEW,
         Settings.System.AMBIENT_WAKE_GESTURES,
+        Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL,
     };
 }

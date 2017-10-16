@@ -289,5 +289,6 @@ public class SystemSettingsValidators {
                     }
                 });
         VALIDATORS.put(System.AMBIENT_WAKE_GESTURES, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUS_BAR_BRIGHTNESS_CONTROL, BOOLEAN_VALIDATOR);
     }
 }
