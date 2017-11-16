@@ -27,6 +27,7 @@ import com.android.systemui.qs.tiles.SoundSearchTile
 import com.android.systemui.qs.tiles.CaffeineTile
 import com.android.systemui.qs.tiles.VpnTile
 import com.android.systemui.qs.tiles.VPNTetheringTile
+import com.android.systemui.qs.tiles.RebootTile
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -94,4 +95,10 @@ interface QSModuleDerpFest {
     @IntoMap
     @StringKey(VPNTetheringTile.TILE_SPEC)
     fun bindVPNTetheringTile(vpnTetheringTile: VPNTetheringTile): QSTileImpl<*>
+
+    /** Inject RebootTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(RebootTile.TILE_SPEC)
+    fun bindRebootTile(rebootTile: RebootTile): QSTileImpl<*>
 }
