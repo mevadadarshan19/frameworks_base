@@ -118,4 +118,8 @@
     <!-- Name of the roaming status bar icon. -->
     <string name="status_bar_roaming">Roaming indicator</string>
 
+    <!-- Reboot/Recovery QS tile -->
+    <string name="quick_settings_reboot_label">Reboot</string>
+    <string name="quick_settings_reboot_recovery_label">Recovery</string>
+
 </resources>
