@@ -157,4 +157,6 @@
     <string name="keyguard_indication_superdart_charging_time" formatted="false"><xliff:g id="percentage">%2$s</xliff:g> • SuperDart-Ladevorgang (<xliff:g id="charging_time_left" example="4 hours and 2 minutes">%1$s</xliff:g> bis zur vollständigen Aufladung)</string>
     <string name="keyguard_plugged_in_superdart_charging"><xliff:g id="percentage">%s</xliff:g> • SuperDart-Ladevorgang</string>
 
+    <!-- Sound Search tile -->
+    <string name="quick_settings_sound_search">Musikerkennung</string>
 </resources>
