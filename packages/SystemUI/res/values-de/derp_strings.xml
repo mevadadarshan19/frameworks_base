@@ -26,6 +26,7 @@
 
     <!-- SoundSearch Tile -->
     <string name="quick_settings_sound_search">Musikerkennung</string>
+    <string name="quick_settings_sound_search_no_app">Entschuldigung, aber das funktioniert nicht, wenn Sie keine Musikerkennungsapp haben.</string>
 
     <!-- Sync QS tile -->
     <string name="quick_settings_sync_label">Synchronisation</string>
