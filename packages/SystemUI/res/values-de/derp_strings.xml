@@ -45,6 +45,13 @@
     <string name="qs_data_switch_changed_1">Daten-SIM-Karte zu SIM 1 wechseln.</string>
     <string name="qs_data_switch_changed_2">Daten-SIM-Karte zu SIM 2 wechseln.</string>
 
+    <!-- Reader mode QS tile -->
+    <string name="quick_settings_reading_mode">Lese-Modus</string>
+    <string name="accessibility_quick_settings_reading_mode_on">Lesemodus an.</string>
+    <string name="accessibility_quick_settings_reading_mode_off">Lesemodus aus.</string>
+    <string name="accessibility_quick_settings_reading_mode_changed_on">Lesemodus angeschaltet.</string>
+    <string name="accessibility_quick_settings_reading_mode_changed_off">Lesemodus ausgeschaltet.</string>
+
     <!-- USB tethering QS tile -->
     <string name="quick_settings_usb_tether_label">USB-Tethering</string>
 
