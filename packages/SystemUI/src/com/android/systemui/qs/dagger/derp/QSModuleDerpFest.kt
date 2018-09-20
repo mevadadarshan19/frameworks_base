@@ -31,6 +31,7 @@ import com.android.systemui.qs.tiles.RebootTile
 import com.android.systemui.qs.tiles.DataSwitchTile
 import com.android.systemui.qs.tiles.CellularTile
 import com.android.systemui.qs.tiles.WifiTile
+import com.android.systemui.qs.tiles.CompassTile
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -122,4 +123,10 @@ interface QSModuleDerpFest {
     @IntoMap
     @StringKey(WifiTile.TILE_SPEC)
     fun bindWifiTile(wifiTile: WifiTile): QSTileImpl<*>
+
+    /** Inject CompassTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(CompassTile.TILE_SPEC)
+    fun bindCompassTile(compassTile: CompassTile): QSTileImpl<*>
 }
