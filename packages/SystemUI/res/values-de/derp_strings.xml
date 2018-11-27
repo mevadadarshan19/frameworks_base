@@ -104,4 +104,9 @@
 
     <!-- DataSwitch Tile -->
     <string name="qs_data_switch_label">SIM-Karte für mobile Daten wechseln</string>
+
+    <!-- Kill button in notification guts -->
+    <string name="force_stop_dlg_title">Beenden erzwingen?</string>
+    <string name="force_stop_dlg_text">Das Beenden einer App zu erzwingen kann zu unerwünschtem Verhalten führen.</string>
+
 </resources>
