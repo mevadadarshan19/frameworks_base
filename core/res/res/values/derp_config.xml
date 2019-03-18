@@ -221,4 +221,6 @@
   <!-- The list of package IDs that are not allowed to use aux cameras. -->
   <string-array name="config_cameraAuxPackageExcludeList" translatable="false" />
 
+    <!-- Whether or not we should show vendor mismatch message -->
+    <bool name="config_show_vendor_mismatch_message">true</bool>
 </resources>
