@@ -268,4 +268,7 @@
 
   <!-- Enable face auth only when swiping security view -->
   <bool name="config_faceAuthOnlyOnSecurityView">false</bool>
+
+  <!-- Default state for LiveDisplay -->
+  <bool name="config_liveDisplayAvailable">true</bool>
 </resources>
