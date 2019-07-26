@@ -158,6 +158,7 @@ import com.android.systemui.charging.WirelessChargingAnimation;
 import com.android.systemui.classifier.FalsingCollector;
 import com.android.systemui.colorextraction.SysuiColorExtractor;
 import com.android.systemui.dagger.SysUISingleton;
+import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.dagger.qualifiers.UiBackground;
 import com.android.systemui.demomode.DemoMode;
@@ -257,6 +258,7 @@ import com.android.systemui.util.DumpUtilsKt;
 import com.android.systemui.util.WallpaperController;
 import com.android.systemui.util.concurrency.DelayableExecutor;
 import com.android.systemui.util.concurrency.MessageRouter;
+import com.android.systemui.util.settings.SystemSettings;
 import com.android.systemui.volume.VolumeComponent;
 import com.android.wm.shell.bubbles.Bubbles;
 import com.android.wm.shell.startingsurface.SplashscreenContentDrawer;
@@ -520,6 +522,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
     private final TunerService mTunerService;
 
     protected GameSpaceManager mGameSpaceManager;
+    private DerpSettingsObserver mDerpSettingsObserver;
 
     /** Controller for the Shade. */
     @VisibleForTesting
@@ -699,6 +702,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
             (extractor, which) -> updateTheme();
 
     private final InteractionJankMonitor mJankMonitor;
+    private final SystemSettings mSystemSettings;
 
     private final OnBackInvokedCallback mOnBackInvokedCallback = () -> {
         if (DEBUG) {
@@ -810,7 +814,9 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
             Lazy<LightRevealScrimViewModel> lightRevealScrimViewModelLazy,
             AlternateBouncerInteractor alternateBouncerInteractor,
             UserTracker userTracker,
-            Provider<FingerprintManager> fingerprintManager
+            Provider<FingerprintManager> fingerprintManager,
+            SystemSettings systemSettings,
+            @Background Handler backgroundHandler
     ) {
         mContext = context;
         mNotificationsController = notificationsController;
@@ -902,6 +908,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
         statusBarWindowStateController.addListener(this::onStatusBarWindowStateChanged);
 
         mScreenOffAnimationController = screenOffAnimationController;
+        mSystemSettings = systemSettings;
 
         mShadeExpansionStateManager.addExpansionListener(this::onPanelExpansionChanged);
         mShadeExpansionStateManager.addFullExpansionListener(this::onShadeExpansionFullyChanged);
@@ -912,6 +919,8 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
         mActivityIntentHelper = new ActivityIntentHelper(mContext);
         mActivityLaunchAnimator = activityLaunchAnimator;
         mGameSpaceManager = new GameSpaceManager(mContext, mKeyguardStateController);
+
+        mDerpSettingsObserver = new DerpSettingsObserver(backgroundHandler);
 
         // The status bar background may need updating when the ongoing call status changes.
         mOngoingCallController.addCallback((animate) -> maybeUpdateBarMode());
@@ -1025,6 +1034,9 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
 
         // Set up the initial notification state. This needs to happen before CommandQueue.disable()
         setUpPresenter();
+
+        mDerpSettingsObserver.observe();
+        mDerpSettingsObserver.update();
 
         if (containsType(result.mTransientBarTypes, ITYPE_STATUS_BAR)) {
             showTransientUnchecked();
@@ -2063,6 +2075,42 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
 
         AnimateExpandSettingsPanelMessage(String subpanel) {
             mSubpanel = subpanel;
+        }
+    }
+
+    private class DerpSettingsObserver extends ContentObserver {
+        private final Handler mBackgroundHandler;
+
+        DerpSettingsObserver(Handler backgroundHandler) {
+            super(backgroundHandler);
+            mBackgroundHandler = backgroundHandler;
+        }
+
+        void observe() {
+            mSystemSettings.registerContentObserverForUser(Settings.System.LESS_BORING_HEADS_UP, this, UserHandle.USER_ALL);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            switch (uri.getLastPathSegment()) {
+                case Settings.System.LESS_BORING_HEADS_UP:
+                    setUseLessBoringHeadsUp();
+                    break;
+            }
+        }
+
+        void update() {
+            mBackgroundHandler.post(() -> {
+                setUseLessBoringHeadsUp();
+        });
+    }
+
+        private void setUseLessBoringHeadsUp() {
+            final boolean lessBoringHeadsUp = mSystemSettings.getIntForUser(
+                    Settings.System.LESS_BORING_HEADS_UP, 0, UserHandle.USER_CURRENT) == 1;
+            mMainHandler.post(() -> {
+                mNotificationInterruptStateProvider.setUseLessBoringHeadsUp(lessBoringHeadsUp);
+            });
         }
     }
 
