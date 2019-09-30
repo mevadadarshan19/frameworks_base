@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2023 DerpFest
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Alert Slider -->
+    <style name="TriStateUiText">
+        <item name="android:textSize">11.0sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+</resources>
