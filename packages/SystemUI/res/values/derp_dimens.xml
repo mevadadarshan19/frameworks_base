@@ -61,4 +61,7 @@
     <dimen name="navigation_home_handle_width_long">170dp</dimen>
     <dimen name="navigation_home_handle_width_very_long">190dp</dimen>
 
+    <!-- Bottom margin size when fingerprint in display is active -->
+    <dimen name="keyguard_indication_margin_bottom_fingerprint_in_display">@dimen/keyguard_indication_margin_bottom</dimen>
+
 </resources>
