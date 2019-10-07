@@ -95,5 +95,6 @@ public class SystemSettings {
         Settings.System.BATTERY_LIGHT_MEDIUM_COLOR,
         Settings.System.BATTERY_LIGHT_FULL_COLOR,
         Settings.System.BATTERY_LIGHT_REALLYFULL_COLOR,
+        Settings.System.DOZE_ON_CHARGE,
     };
 }
