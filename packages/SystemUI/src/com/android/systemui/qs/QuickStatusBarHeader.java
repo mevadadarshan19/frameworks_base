@@ -19,12 +19,20 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.android.systemui.battery.BatteryMeterView.BATTERY_STYLE_CIRCLE;
 
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.UserHandle;
 import android.provider.AlarmClock;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.DisplayCutout;
@@ -33,17 +41,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.internal.graphics.ColorUtils;
 import com.android.internal.policy.SystemBarUtils;
 import com.android.settingslib.Utils;
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.battery.BatteryMeterView;
+import com.android.systemui.derp.header.StatusBarHeaderMachine;
 import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.statusbar.phone.StatusBarContentInsetsProvider;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
@@ -61,7 +72,7 @@ import java.util.List;
  * battery, carrier info and privacy icons) and also contains the {@link QuickQSPanel}.
  */
 public class QuickStatusBarHeader extends FrameLayout implements
-        TunerService.Tunable {
+        StatusBarHeaderMachine.IStatusBarHeaderMachineObserver, TunerService.Tunable {
 
     private boolean mExpanded;
     private boolean mQsDisabled;
@@ -98,6 +109,33 @@ public class QuickStatusBarHeader extends FrameLayout implements
     private StatusIconContainer mIconContainer;
     private View mPrivacyChip;
 
+    // QS Header
+    private ImageView mQsHeaderImageView;
+    private View mQsHeaderLayout;
+    private boolean mHeaderImageEnabled;
+    private StatusBarHeaderMachine mStatusBarHeaderMachine;
+    private Drawable mCurrentBackground;
+    private final Handler mHandler = new Handler();
+
+    private class OmniSettingsObserver extends ContentObserver {
+        OmniSettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = getContext().getContentResolver();
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.STATUS_BAR_CUSTOM_HEADER), false,
+                    this, UserHandle.USER_ALL);
+            }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
+    private OmniSettingsObserver mOmniSettingsObserver = new OmniSettingsObserver(mHandler); 
+
     @Nullable
     private TintedIconManager mTintedIconManager;
     @Nullable
@@ -124,6 +162,8 @@ public class QuickStatusBarHeader extends FrameLayout implements
     public QuickStatusBarHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
         mActivityStarter = Dependency.get(ActivityStarter.class);
+        mStatusBarHeaderMachine = new StatusBarHeaderMachine(context);
+        mOmniSettingsObserver.observe();
     }
 
     /**
@@ -162,7 +202,12 @@ public class QuickStatusBarHeader extends FrameLayout implements
         // Tint for the battery icons are handled in setupHost()
         mBatteryRemainingIcon = findViewById(R.id.batteryRemainingIcon);
 
+        mQsHeaderLayout = findViewById(R.id.layout_header);
+        mQsHeaderImageView = findViewById(R.id.qs_header_image_view);
+        mQsHeaderImageView.setClipToOutline(true);
+
         updateResources();
+        updateSettings();
         Configuration config = mContext.getResources().getConfiguration();
         setDatePrivacyContainersWidth(config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -206,6 +251,19 @@ public class QuickStatusBarHeader extends FrameLayout implements
         updateAlphaAnimator();
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mStatusBarHeaderMachine.addObserver(this);
+        mStatusBarHeaderMachine.updateEnablement();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mStatusBarHeaderMachine.removeObserver(this);
+    }
+
     public QuickQSPanel getHeaderQsPanel() {
         return mHeaderQsPanel;
     }
@@ -215,14 +273,18 @@ public class QuickStatusBarHeader extends FrameLayout implements
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mDatePrivacyView.getMeasuredHeight() != mTopViewMeasureHeight) {
             mTopViewMeasureHeight = mDatePrivacyView.getMeasuredHeight();
-            updateAnimators();
         }
+        if (mQsHeaderLayout.getMeasuredHeight() != mTopViewMeasureHeight) {
+            mTopViewMeasureHeight = mQsHeaderLayout.getMeasuredHeight();
+        }
+        updateAnimators();
     }
 
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         updateResources();
+        updateStatusbarProperties();
         setDatePrivacyContainersWidth(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
@@ -276,7 +338,12 @@ public class QuickStatusBarHeader extends FrameLayout implements
         mRoundedCornerPadding = resources.getDimensionPixelSize(
                 R.dimen.rounded_corner_content_padding);
 
-        int qsOffsetHeight = SystemBarUtils.getQuickQsOffsetHeight(mContext);
+        int qsOffsetHeight = SystemBarUtils.getQuickQsOffsetHeight(mContext)
+                 + (mHeaderImageEnabled ?
+                resources.getDimensionPixelSize(R.dimen.qs_header_image_offset) : 0);
+
+        int statusBarSideMargin = mContext.getResources().getDimensionPixelSize(
+                R.dimen.qs_header_image_side_margin);
 
         mDatePrivacyView.getLayoutParams().height =
                 Math.max(qsOffsetHeight, mDatePrivacyView.getMinimumHeight());
@@ -320,7 +387,13 @@ public class QuickStatusBarHeader extends FrameLayout implements
             qqsLP.topMargin = SystemBarUtils.getStatusBarHeight(mContext) + mContext.getResources()
                     .getDimensionPixelSize(R.dimen.qqs_margin_top);
         }
-        mHeaderQsPanel.setLayoutParams(qqsLP);
+        mQsHeaderLayout.getLayoutParams().height =
+                Math.max(qsOffsetHeight, mQsHeaderLayout.getMinimumHeight()) +
+                (mHeaderImageEnabled ?
+                resources.getDimensionPixelSize(R.dimen.qs_header_image_offset) : 0);
+        mQsHeaderLayout.setLayoutParams(mQsHeaderLayout.getLayoutParams());
+
+        mQsHeaderLayout.setVisibility(mHeaderImageEnabled ? View.VISIBLE : View.GONE);
 
         updateBatteryMode();
         updateHeadersPadding();
@@ -435,6 +508,19 @@ public class QuickStatusBarHeader extends FrameLayout implements
         mExpanded = expanded;
         quickQSPanelController.setExpanded(expanded);
         updateEverything();
+    }
+
+    private void updateSettings() {
+        mHeaderImageEnabled = Settings.System.getIntForUser(getContext().getContentResolver(),
+                Settings.System.STATUS_BAR_CUSTOM_HEADER, 0,
+                UserHandle.USER_CURRENT) == 1;
+        updateResources();
+    }
+
+    // Update color schemes in landscape to use wallpaperTextColor
+    private void updateStatusbarProperties() {
+        boolean shouldUseWallpaperTextColor = !mHeaderImageEnabled;
+        //mClockView.useWallpaperTextColor(shouldUseWallpaperTextColor);
     }
 
     /**
@@ -581,6 +667,10 @@ public class QuickStatusBarHeader extends FrameLayout implements
                 mWaterfallTopInset,
                 paddingRight,
                 0);
+        mQsHeaderLayout.setPadding(0,
+                mWaterfallTopInset,
+                0,
+                0);
     }
 
     public void updateEverything() {
@@ -605,6 +695,77 @@ public class QuickStatusBarHeader extends FrameLayout implements
     public void setExpandedScrollAmount(int scrollY) {
         mStatusIconsView.setScrollY(scrollY);
         mDatePrivacyView.setScrollY(scrollY);
+        mQsHeaderLayout.setScrollY(scrollY);
+    }
+
+    @Override
+    public void updateHeader(final Drawable headerImage, final boolean force) {
+        post(new Runnable() {
+            public void run() {
+                doUpdateStatusBarCustomHeader(headerImage, force);
+            }
+        });
+    }
+
+    @Override
+    public void disableHeader() {
+        post(new Runnable() {
+            public void run() {
+                mCurrentBackground = null;
+                mQsHeaderImageView.setVisibility(View.GONE);
+                mHeaderImageEnabled = false;
+                updateResources();
+            }
+        });
+    }
+
+    @Override
+    public void refreshHeader() {
+        post(new Runnable() {
+            public void run() {
+                doUpdateStatusBarCustomHeader(mCurrentBackground, true);
+            }
+        });
+    }
+
+    private void doUpdateStatusBarCustomHeader(final Drawable next, final boolean force) {
+        if (next != null) {
+            mQsHeaderImageView.setVisibility(View.VISIBLE);
+            mCurrentBackground = next;
+            setNotificationPanelHeaderBackground(next, force);
+            mHeaderImageEnabled = true;
+            updateResources();
+        } else {
+            mCurrentBackground = null;
+            mQsHeaderImageView.setVisibility(View.GONE);
+            mHeaderImageEnabled = false;
+            updateResources();
+        }
+    }
+
+    private void setNotificationPanelHeaderBackground(final Drawable dw, final boolean force) {
+        if (mQsHeaderImageView.getDrawable() != null && !force) {
+            Drawable[] arrayDrawable = new Drawable[2];
+            arrayDrawable[0] = mQsHeaderImageView.getDrawable();
+            arrayDrawable[1] = dw;
+
+            TransitionDrawable transitionDrawable = new TransitionDrawable(arrayDrawable);
+            transitionDrawable.setCrossFadeEnabled(true);
+            mQsHeaderImageView.setImageDrawable(transitionDrawable);
+            transitionDrawable.startTransition(1000);
+        } else {
+            mQsHeaderImageView.setImageDrawable(dw);
+        }
+        applyHeaderBackgroundShadow();
+    }
+
+    private void applyHeaderBackgroundShadow() {
+        final int headerShadow = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW, 0,
+                UserHandle.USER_CURRENT);
+        if (mCurrentBackground != null && mQsHeaderImageView.getDrawable() != null) {
+            mQsHeaderImageView.setImageAlpha(255 - headerShadow);
+        }
     }
 
     @Override
