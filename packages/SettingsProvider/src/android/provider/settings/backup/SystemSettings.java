@@ -105,5 +105,8 @@ public class SystemSettings {
         Settings.System.QS_FOOTER_TEXT_STRING,
         Settings.System.STATUSBAR_NOTIF_COUNT,
         Settings.System.SENSOR_BLOCK,
+        Settings.System.PULSE_AMBIENT_LIGHT,
+        Settings.System.AMBIENT_NOTIFICATION_LIGHT_ENABLED,
+        Settings.System.AMBIENT_NOTIFICATION_LIGHT,
     };
 }
