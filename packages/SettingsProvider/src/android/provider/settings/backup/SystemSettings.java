@@ -98,5 +98,6 @@ public class SystemSettings {
         Settings.System.LOCKSCREEN_BATTERY_INFO,
         Settings.System.LOCKSCREEN_BATTERY_INFO_TEMP_UNIT,
         Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
+        Settings.System.QS_FOOTER_TEXT_SHOW,
     };
 }
