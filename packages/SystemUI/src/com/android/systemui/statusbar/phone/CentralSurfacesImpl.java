@@ -4217,6 +4217,9 @@ public class CentralSurfacesImpl extends CoreStartable implements
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.DOUBLE_TAP_NO_LANDSCAPE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_MEDIA_BLUR),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -4227,17 +4230,27 @@ public class CentralSurfacesImpl extends CoreStartable implements
                     || uri.equals(Settings.System.getUriFor(
                     Settings.System.DOUBLE_TAP_NO_LANDSCAPE))) {
                 setDoubleTapToSleepGesture();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_MEDIA_BLUR))) {
+                setLockScreenMediaBlurLevel();
             }
         }
 
         public void update() {
             setDoubleTapToSleepGesture();
+            setLockScreenMediaBlurLevel();
         }
     }
 
     private void setDoubleTapToSleepGesture() {
         if (mNotificationShadeWindowViewController != null) {
             mNotificationShadeWindowViewController.setDoubleTapToSleepGesture();
+        }
+    }
+
+    private void setLockScreenMediaBlurLevel() {
+        if (mMediaManager != null) {
+            mMediaManager.setLockScreenMediaBlurLevel();
         }
     }
 
