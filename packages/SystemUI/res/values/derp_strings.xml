@@ -118,4 +118,6 @@
     <string name="quick_settings_reboot_recovery_label">Recovery</string>
     <string name="quick_settings_reboot_bootloader_label">Bootloader</string>
 
+    <!-- DataSwitch Tile -->
+    <string name="qs_data_switch_label">Switch data card</string>
 </resources>

@@ -28,6 +28,7 @@ import com.android.systemui.qs.tiles.CaffeineTile
 import com.android.systemui.qs.tiles.VpnTile
 import com.android.systemui.qs.tiles.VPNTetheringTile
 import com.android.systemui.qs.tiles.RebootTile
+import com.android.systemui.qs.tiles.DataSwitchTile
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -101,4 +102,10 @@ interface QSModuleDerpFest {
     @IntoMap
     @StringKey(RebootTile.TILE_SPEC)
     fun bindRebootTile(rebootTile: RebootTile): QSTileImpl<*>
+
+    /** Inject DataSwitchTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(DataSwitchTile.TILE_SPEC)
+    fun bindDataSwitchTile(dataSwitchTile: DataSwitchTile): QSTileImpl<*>
 }

@@ -102,4 +102,6 @@
     <string name="quick_settings_reboot_label">Neustart</string>
     <string name="quick_settings_reboot_recovery_label">Recovery</string>
 
+    <!-- DataSwitch Tile -->
+    <string name="qs_data_switch_label">SIM-Karte für mobile Daten wechseln</string>
 </resources>
