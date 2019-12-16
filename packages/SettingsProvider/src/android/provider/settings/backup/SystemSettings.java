@@ -92,5 +92,6 @@ public class SystemSettings {
         Settings.System.STATUS_BAR_BATTERY_STYLE,
         Settings.System.SHOW_BATTERY_PERCENT_INSIDE,
         Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL,
+        Settings.System.FLASHLIGHT_ON_CALL,
     };
 }
