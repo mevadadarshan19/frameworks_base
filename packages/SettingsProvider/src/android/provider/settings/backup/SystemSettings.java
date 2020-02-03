@@ -111,5 +111,6 @@ public class SystemSettings {
         Settings.System.NOTIFICATION_PULSE_DURATION,
         Settings.System.ENABLE_FLOATING_ROTATION_BUTTON,
         Settings.System.LOCKSCREEN_ROTATION,
+        Settings.System.RINGTONE_VIBRATION_PATTERN,
     };
 }
