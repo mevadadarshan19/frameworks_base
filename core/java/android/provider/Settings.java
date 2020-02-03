@@ -5664,7 +5664,7 @@ public final class Settings {
          */
         public static final String DOUBLE_TAP_NO_LANDSCAPE = "double_tap_no_landscape";
 
-	/**
+        /**
          * Adaptive playback
          * Automatically pause media when the volume is muted and
          * will resume automatically when volume is restored.
@@ -6173,6 +6173,18 @@ public final class Settings {
          * @hide
          */
         public static final String OMNI_KEYGUARD_SHOW_BATTERY_BAR_ALWAYS = "sysui_keyguard_show_battery_bar_always";
+
+        /**
+         * Which Vibration Pattern to use
+         * 0: dzzz-dzzz
+         * 1: dzzz-da
+         * 2: mm-mm-mm
+         * 3: da-da-dzzz
+         * 4: da-dzzz-da
+         * @hide
+         */
+        @Readable
+        public static final String RINGTONE_VIBRATION_PATTERN = "ringtone_vibration_pattern";
 
         /**
          * IMPORTANT: If you add a new public settings you also have to add it to
