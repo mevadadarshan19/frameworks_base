@@ -28,4 +28,9 @@
 
     <!-- USB tethering QS tile -->
     <string name="quick_settings_usb_tether_label">USB-Tethering</string>
+
+    <!-- AOD QS tile -->
+    <string name="quick_settings_aod_on_charge_label">AOD beim Laden</string>
+    <string name="quick_settings_aod_off_label">AOD aus</string>
+
 </resources>
