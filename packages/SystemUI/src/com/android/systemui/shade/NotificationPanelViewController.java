@@ -623,6 +623,10 @@ public final class NotificationPanelViewController implements Dumpable {
     private boolean mAnimatingQS;
     private NotificationLightsView mPulseLightsView;
     private boolean mPulseLightHandled;
+    private boolean mAmbientPulseLightRunning;
+    private boolean mAmbientPulseRanOnce = false; // used only for repeats
+    public static final String CANCEL_NOTIFICATION_PULSE_ACTION = "cancel_notification_pulse";
+
     /** The end bounds of a clipping animation. */
     private final Rect mQsClippingAnimationEndBounds = new Rect();
     /** The animator for the qs clipping bounds. */
@@ -686,6 +690,9 @@ public final class NotificationPanelViewController implements Dumpable {
     private final NotificationListContainer mNotificationListContainer;
     private final NotificationStackSizeCalculator mNotificationStackSizeCalculator;
     private final NPVCDownEventState.Buffer mLastDownEvents;
+
+    private NotificationStackScrollLayout mStackScrollLayout;
+
     private final KeyguardBottomAreaViewModel mKeyguardBottomAreaViewModel;
     private final KeyguardBottomAreaInteractor mKeyguardBottomAreaInteractor;
     private boolean mBlockedGesturalNavigation = false;
@@ -1127,6 +1134,7 @@ public final class NotificationPanelViewController implements Dumpable {
 
         NotificationStackScrollLayout stackScrollLayout = mView.findViewById(
                 R.id.notification_stack_scroller);
+        mStackScrollLayout = stackScrollLayout;
         mNotificationStackScrollLayoutController.attach(stackScrollLayout);
         mNotificationStackScrollLayoutController.setOnHeightChangedListener(
                 new NsslHeightChangedListener());
@@ -1384,6 +1392,7 @@ public final class NotificationPanelViewController implements Dumpable {
         mNotificationContainerParent.removeView(keyguardStatusView);
         keyguardStatusView = (KeyguardStatusView) mLayoutInflater.inflate(
                 R.layout.keyguard_status_view, mNotificationContainerParent, false);
+        mKeyguardStatusView = keyguardStatusView;
         mNotificationContainerParent.addView(keyguardStatusView, statusIndex);
         // When it's reinflated, this is centered by default. If it shouldn't be, this will update
         // below when resources are updated.
@@ -4383,21 +4392,24 @@ public final class NotificationPanelViewController implements Dumpable {
         final boolean
                 animatePulse =
                 !mDozeParameters.getDisplayNeedsBlanking() && mDozeParameters.getAlwaysOn();
-        boolean pulseLights = Settings.System.getIntForUser(
-                mView.getContext().getContentResolver(), Settings.System.NOTIFICATION_PULSE,
-                0, UserHandle.USER_CURRENT) != 0;
-        boolean ambientLights = Settings.System.getIntForUser(
-                mView.getContext().getContentResolver(), Settings.System.AOD_NOTIFICATION_PULSE,
-                0, UserHandle.USER_CURRENT) != 0;
-        boolean activeNotif = mNotificationStackScroller.hasActiveClearableNotifications(ROWS_ALL);
+        ContentResolver resolver = mView.getContext().getContentResolver();
+        boolean pulseLights = Settings.System.getIntForUser(resolver,
+                Settings.System.NOTIFICATION_PULSE, 0, UserHandle.USER_CURRENT) != 0;
+        boolean ambientLights = Settings.System.getIntForUser(resolver,
+                Settings.System.AOD_NOTIFICATION_PULSE, 0, UserHandle.USER_CURRENT) != 0;
+        boolean aodEnabled = Settings.Secure.getIntForUser(resolver,
+                Settings.Secure.DOZE_ALWAYS_ON, 0, UserHandle.USER_CURRENT) == 1;
+        ExpandableNotificationRow row = mStackScrollLayout.getFirstActiveClearableNotifications(ROWS_ALL);
+        boolean activeNotif = row != null;
         int pulseReason = Settings.System.getIntForUser(mView.getContext().getContentResolver(),
                 Settings.System.PULSE_TRIGGER_REASON, DozeLog.PULSE_REASON_NONE, UserHandle.USER_CURRENT);
         boolean pulseReasonNotification = pulseReason == DozeLog.PULSE_REASON_NOTIFICATION;
-        boolean ambientLightsHideAod = Settings.System.getIntForUser(
-                mView.getContext().getContentResolver(), Settings.System.AOD_NOTIFICATION_PULSE_CLEAR,
-                0, UserHandle.USER_CURRENT) != 0;
-        int ambientLightsTimeout = Settings.System.getIntForUser(mView.getContext().getContentResolver(),
+        boolean ambientLightsHideAod = Settings.System.getIntForUser(resolver,
+                Settings.System.AOD_NOTIFICATION_PULSE_CLEAR, 0, UserHandle.USER_CURRENT) != 0;
+        int ambientLightsTimeout = Settings.System.getIntForUser(resolver,
                 Settings.System.AOD_NOTIFICATION_PULSE_TIMEOUT, 0, UserHandle.USER_CURRENT);
+        boolean pulseColorAutomatic = Settings.System.getIntForUser(resolver,
+                Settings.System.NOTIFICATION_PULSE_COLOR_AUTOMATIC, 0, UserHandle.USER_CURRENT) != 0;
         if (animatePulse) {
             mAnimateNextPositionUpdate = true;
         }
@@ -4413,11 +4425,22 @@ public final class NotificationPanelViewController implements Dumpable {
                         + " mPulseLightHandled = " + mPulseLightHandled + " mDozing = " + mDozing
                         + " pulseReason = " + pulseReason);
             }
+            int pulseColor = mPulseLightsView.getDefaultNotificationLightsColor();
+            if (row != null) {
+                if (pulseColorAutomatic) {
+                    int notificationColor = row.getStatusBarNotification().getNotification().color;
+                    if (notificationColor != Notification.COLOR_DEFAULT) {
+                        pulseColor = notificationColor;
+                    }
+                } else {
+                    pulseColor = mPulseLightsView.getNotificationLightsColor();
+                }
+            }
             if (mPulsing) {
                 if (activeNotif && pulseReasonNotification) {
                     // show the bars if we have to
                     if (pulseLights) {
-                        mPulseLightsView.animateNotification();
+                        mPulseLightsView.animateNotificationWithColor(pulseColor);
                         mPulseLightsView.setVisibility(View.VISIBLE);
                     } else {
                         // bars can still be visible as leftover
@@ -4440,7 +4463,7 @@ public final class NotificationPanelViewController implements Dumpable {
                     if (ambientLightsHideAod) {
                         showAodContent(false);
                     }
-                    mPulseLightsView.animateNotification();
+                    mPulseLightsView.animateNotificationWithColor(pulseColor);
                     mPulseLightsView.setVisibility(View.VISIBLE);
                 } else {
                     // no active notifications or just pulse without aod - so no reason to continue
