@@ -3996,7 +3996,7 @@ public final class NotificationPanelViewController extends PanelViewController {
         boolean ambientLightsHideAod = Settings.System.getIntForUser(resolver,
                 Settings.System.AOD_NOTIFICATION_PULSE_CLEAR, 0, UserHandle.USER_CURRENT) != 0;
         boolean pulseColorAutomatic = Settings.System.getIntForUser(resolver,
-                Settings.System.NOTIFICATION_PULSE_COLOR_MODE, 0, UserHandle.USER_CURRENT) == 2;
+                Settings.System.NOTIFICATION_PULSE_COLOR_MODE, 0, UserHandle.USER_CURRENT) == 0;
         boolean pulseForAll = Settings.System.getIntForUser(resolver,
                 Settings.System.AMBIENT_LIGHT_PULSE_FOR_ALL, 0, UserHandle.USER_CURRENT) == 1;
         int repeats = Settings.System.getIntForUser(resolver,
@@ -4031,26 +4031,24 @@ public final class NotificationPanelViewController extends PanelViewController {
                 }
             }
             if (mPulsing) {
-                if (pulseReasonNotification || pulseForAll) {
-                    if (activeNotif) {
-                        // show the bars if we have to
-                        if (pulseLights) {
-                            mPulseLightsView.animateNotificationWithColor(pulseColor);
-                            mPulseLightsView.setVisibility(View.VISIBLE);
-                        } else if (!mAmbientPulseLightRunning) {
-                            // bars can still be visible as leftover
-                            // but we dont want them here
-                            mPulseLightsView.setVisibility(View.GONE);
-                        }
-                        if (ambientLights && aodEnabled) {
-                            mPulseLightHandled = false;
-                            mAmbientPulseLightRunning = false;
-                            // tell power manager that we want to enable aod
-                            // must do that here already not on pulsing = false
-                            Settings.System.putIntForUser(mView.getContext().getContentResolver(),
-                                    Settings.System.AOD_NOTIFICATION_PULSE_TRIGGER, 1,
-                                    UserHandle.USER_CURRENT);
-                        }
+                if ((activeNotif && pulseReasonNotification) || pulseForAll) {
+                    // show the bars if we have to
+                    if (pulseLights) {
+                        mPulseLightsView.animateNotificationWithColor(pulseColor);
+                        mPulseLightsView.setVisibility(View.VISIBLE);
+                    } else if (!mAmbientPulseLightRunning) {
+                        // bars can still be visible as leftover
+                        // but we dont want them here
+                        mPulseLightsView.setVisibility(View.GONE);
+                    }
+                    if (ambientLights && aodEnabled) {
+                        mPulseLightHandled = false;
+                        mAmbientPulseLightRunning = false;
+                        // tell power manager that we want to enable aod
+                        // must do that here already not on pulsing = false
+                        Settings.System.putIntForUser(mView.getContext().getContentResolver(),
+                                Settings.System.AOD_NOTIFICATION_PULSE_TRIGGER, 1,
+                                UserHandle.USER_CURRENT);
                     }
                 } else {
                     showAodContent(true);
