@@ -125,6 +125,7 @@ android_library {
         "jsr330",
         "lottie",
         "LowLightDreamLib",
+        "vendor.lineage.powershare-V1.0-java",
     ],
     manifest: "AndroidManifest.xml",
     additional_manifests: ["DerpFestManifest.xml"],
@@ -230,6 +231,8 @@ android_library {
         "jsr330",
         "WindowManager-Shell",
         "LowLightDreamLib",
+        "vendor.lineage.powershare-V1.0-java",
+
     ],
     libs: [
         "android.test.runner",
