@@ -33,6 +33,9 @@
     <string name="global_action_reboot_systemui">SystemUI</string>
     <string name="global_action_settings">Settings</string>
 
+    <!-- Anti flicker QS tile -->
+    <string name="quick_settings_anti_flicker">Anti flicker</string>
+
     <!-- Name of the nfc status bar icon. -->
     <string name="status_bar_nfc" translatable="false">NFC</string>
 
