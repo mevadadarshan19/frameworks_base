@@ -1985,6 +1985,9 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
         if (mProximitySensor != null) {
             mProximityThreshold = Math.min(mProximitySensor.getMaximumRange(),
                     TYPICAL_PROXIMITY_THRESHOLD);
+            if (Float.isNaN(mProximityThreshold)) {
+                mProximityThreshold = 5.0f;
+            }
         }
     }
 
