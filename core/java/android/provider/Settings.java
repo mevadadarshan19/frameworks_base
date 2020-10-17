@@ -6385,6 +6385,12 @@ public final class Settings {
         public static final String AOD_NOTIFICATION_PULSE_TRIGGER = "ambient_notification_light";
 
         /**
+         * Pulse Ambient lights color
+         * @hide
+         */
+        public static final String NOTIFICATION_PULSE_COLOR = "ambient_notification_light_color";
+
+        /**
          * Whether Ambient Edge lights are activated
          * @hide
          */
