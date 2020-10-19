@@ -83,4 +83,10 @@
 
     <!-- Statusbar Icons -->
     <string name="status_bar_data_saver">Datensparmodus</string>
+
+    <!-- Label for UI element which allows deleting the screenshot [CHAR LIMIT=30] -->
+    <string name="screenshot_delete_label">Löschen</string>
+
+    <!-- Content description indicating that tapping the element will allow deleting the screenshot [CHAR LIMIT=NONE] -->
+    <string name="screenshot_delete_description">Screenshot löschen</string>
 </resources>
