@@ -28,6 +28,7 @@ import com.android.systemui.plugins.qs.QSTile;
 import com.android.systemui.plugins.qs.QSTileView;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.external.CustomTile;
+import com.android.systemui.qs.tiles.DerpSpaceTile;
 import com.android.systemui.qs.tiles.AirplaneModeTile;
 import com.android.systemui.qs.tiles.AutoBrightnessTile;
 import com.android.systemui.qs.tiles.AlarmTile;
@@ -133,6 +134,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<RefreshRateTile> mRefreshRateTileProvider;
     private final Provider<AutoBrightnessTile> mAutoBrightnessTileProvider;
     private final Provider<VolumeTile> mVolumeTileProvider;
+    private final Provider<DerpSpaceTile> mDerpSpaceTileProvider;
 
     private final Lazy<QSHost> mQsHostLazy;
     private final Provider<CustomTile.Builder> mCustomTileBuilderProvider;
@@ -187,7 +189,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<SoundTile> soundTileProvider,
             Provider<RefreshRateTile> refreshRateTileProvider,
             Provider<AutoBrightnessTile> autoBrightnessTileProvider,
-            Provider<VolumeTile> volumeTileProvider) {
+            Provider<VolumeTile> volumeTileProvider,
+            Provider<DerpSpaceTile> derpSpaceTileProvider) {
         mQsHostLazy = qsHostLazy;
         mCustomTileBuilderProvider = customTileBuilderProvider;
 
@@ -238,6 +241,7 @@ public class QSFactoryImpl implements QSFactory {
         mRefreshRateTileProvider = refreshRateTileProvider;
         mAutoBrightnessTileProvider = autoBrightnessTileProvider;
         mVolumeTileProvider = volumeTileProvider;
+        mDerpSpaceTileProvider = derpSpaceTileProvider;
     }
 
     /** Creates a tile with a type based on {@code tileSpec} */
@@ -348,6 +352,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mAutoBrightnessTileProvider.get();
             case "volume_panel":
                 return mVolumeTileProvider.get();
+            case "derpspace":
+                return mDerpSpaceTileProvider.get();
         }
 
         // Custom tiles
