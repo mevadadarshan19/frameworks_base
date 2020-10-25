@@ -203,4 +203,8 @@
         =1 {# device connected}
         other {# devices connected}
     }</string>
+
+    <!-- DerpSpace Tile -->
+    <string name="quick_derpspace_label" translatable="false">DerpSpace</string>
+    <string name="quick_derpspace_toast">LOL, you really thought that long click will take you somewhere!!!</string>
 </resources>

@@ -184,4 +184,7 @@
         =1 {# Gerät verbunden}
         other {# Geräte verbunden}
     }</string>
+
+    <!-- DerpSpace Tile -->
+    <string name="quick_derpspace_toast">LOL, you really thought that long click will take you somewhere!!!</string>
 </resources>
