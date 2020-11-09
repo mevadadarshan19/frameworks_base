@@ -128,6 +128,7 @@ import com.android.keyguard.dagger.KeyguardStatusBarViewComponent;
 import com.android.keyguard.dagger.KeyguardStatusViewComponent;
 import com.android.keyguard.dagger.KeyguardUserSwitcherComponent;
 import com.android.systemui.DejankUtils;
+import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.RetickerAnimations;
 import com.android.systemui.animation.ActivityLaunchAnimator;
@@ -313,10 +314,6 @@ public final class NotificationPanelViewController extends PanelViewController {
     private final Provider<FlingAnimationUtils.Builder> mFlingAnimationUtilsBuilder;
     private final NotificationStackScrollLayoutController mNotificationStackScrollLayoutController;
     private final NotificationIconAreaController mNotificationIconAreaController;
-
-    // Omni additions
-    private NotificationLightsView mPulseLightsView;
-    private boolean mPulseLightHandled;
 
     /**
      * Maximum time before which we will expand the panel even for slow motions when getting a
@@ -625,6 +622,8 @@ public final class NotificationPanelViewController extends PanelViewController {
     private boolean mAnimatingQS;
     private NotificationLightsView mPulseLightsView;
     private boolean mPulseLightHandled;
+    private boolean mAmbientPulseLightRunning;
+    private boolean mAmbientPulseRanOnce = false; // used only for repeats
     public static final String CANCEL_NOTIFICATION_PULSE_ACTION = "cancel_notification_pulse";
 
     /**
@@ -3996,10 +3995,10 @@ public final class NotificationPanelViewController extends PanelViewController {
         boolean pulseReasonNotification = pulseReason == DozeLog.PULSE_REASON_NOTIFICATION;
         boolean ambientLightsHideAod = Settings.System.getIntForUser(resolver,
                 Settings.System.AOD_NOTIFICATION_PULSE_CLEAR, 0, UserHandle.USER_CURRENT) != 0;
-        int ambientLightsTimeout = Settings.System.getIntForUser(resolver,
-                Settings.System.AOD_NOTIFICATION_PULSE_TIMEOUT, 0, UserHandle.USER_CURRENT);
         boolean pulseColorAutomatic = Settings.System.getIntForUser(resolver,
                 Settings.System.NOTIFICATION_PULSE_COLOR_MODE, 0, UserHandle.USER_CURRENT) == 2;
+        int repeats = Settings.System.getIntForUser(resolver,
+                Settings.System.NOTIFICATION_PULSE_REPEATS, 0, UserHandle.USER_CURRENT);
         if (animatePulse) {
             mAnimateNextPositionUpdate = true;
         }
@@ -4008,7 +4007,7 @@ public final class NotificationPanelViewController extends PanelViewController {
         if (!mPulsing && !mDozing) {
             mAnimateNextPositionUpdate = false;
         }
-        if (mPulseLightsView != null) {
+        if (mPulseLightsView != null && pulseLights) {
             if (DEBUG_PULSE_LIGHT) {
                 Log.d(TAG, "setPulsing pulsing = " + pulsing + " pulseLights = " + pulseLights
                         + " ambientLights = " + ambientLights + " activeNotif = " + activeNotif
@@ -4043,6 +4042,7 @@ public final class NotificationPanelViewController extends PanelViewController {
                         }
                         if (ambientLights) {
                             mPulseLightHandled = false;
+                            mAmbientPulseLightRunning = false;
                             // tell power manager that we want to enable aod
                             // must do that here already not on pulsing = false
                             Settings.System.putIntForUser(mView.getContext().getContentResolver(),
@@ -4062,12 +4062,16 @@ public final class NotificationPanelViewController extends PanelViewController {
                     }
                     mPulseLightsView.animateNotificationWithColor(pulseColor);
                     mPulseLightsView.setVisibility(View.VISIBLE);
+                    mAmbientPulseLightRunning = true;
+                    if (repeats != 0 && !mAmbientPulseRanOnce) {
+                        mAmbientPulseRanOnce = true;
+                    } else if (repeats != 0 && mAmbientPulseRanOnce) {
+                        // stop if using repeats and already ran once
+                        stopNotificationPulse();
+                    }
                 } else {
                     // no active notifications or just pulse without aod - so no reason to continue
-                    mPulseLightsView.setVisibility(View.GONE);
-                    Settings.System.putIntForUser(mView.getContext().getContentResolver(),
-                            Settings.System.AOD_NOTIFICATION_PULSE_TRIGGE, 0,
-                            UserHandle.USER_CURRENT);
+                    stopNotificationPulse();
                 }
             }
         }
@@ -5444,4 +5448,48 @@ public final class NotificationPanelViewController extends PanelViewController {
             mainLocation[1] + mReTickerComeback.getHeight()
         ));
     };
+
+    public void stopNotificationPulse() {
+        if (DEBUG_PULSE_LIGHT) {
+            Log.d(TAG, "stopNotificationPulse mAmbientPulseLightRunning = "
+                    + mAmbientPulseLightRunning);
+        }
+        mPulseLightsView.setVisibility(View.GONE);
+        mPulseLightsView.stopAnimateNotification();
+        Settings.System.putIntForUser(mView.getContext().getContentResolver(),
+                Settings.System.AOD_NOTIFICATION_PULSE_TRIGGER, 0,
+                UserHandle.USER_CURRENT);
+        boolean doShowAodContent = true;
+        if (mAmbientPulseLightRunning) {
+            mAmbientPulseLightRunning = false;
+            mPulseLightHandled = true;
+            // only do it if we continue to doze but never when we already woke up
+            if (mDozing) {
+                DozeParameters dozeParameters = Dependency.get(DozeParameters.class);
+                if (DEBUG_PULSE_LIGHT) {
+                    Log.d(TAG, "stopNotificationPulse getAlwaysOnAfterAmbientLight() = "
+                            + dozeParameters.getAlwaysOnAfterAmbientLight());
+                }
+                // do we need to stop aod (doze)
+                if (!dozeParameters.getAlwaysOnAfterAmbientLight()) {
+                    if (DEBUG_PULSE_LIGHT) {
+                        Log.d(TAG, "stopNotificationPulse disable aod");
+                    }
+                    doShowAodContent = false;
+                    // we want that in one step to prevent flicker
+                    // since this will end doze we will enter setDozing(false) which
+                    // will basically call this again
+                    mPowerManager.goToSleep(mSystemClock.uptimeMillis(),
+                            PowerManager.GO_TO_SLEEP_REASON_APPLICATION,
+                            PowerManager.GO_TO_SLEEP_FLAG_NO_DOZE);
+                }
+            }
+        }
+        if (doShowAodContent) {
+            if (mBarState == StatusBarState.KEYGUARD
+                    || mBarState == StatusBarState.SHADE_LOCKED) {
+                showAodContent(true);
+            }
+        }
+    }
 }
