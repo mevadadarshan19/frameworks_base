@@ -110,5 +110,7 @@ public class SystemSettings {
         Settings.System.AOD_NOTIFICATION_PULSE_CLEAR,
         Settings.System.NOTIFICATION_PULSE_COLOR_MODE,
         Settings.System.NOTIFICATION_PULSE_COLOR,
+        Settings.System.NOTIFICATION_PULSE_REPEATS,
+        Settings.System.NOTIFICATION_PULSE_DURATION,
     };
 }
