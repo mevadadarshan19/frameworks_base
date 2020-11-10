@@ -4452,7 +4452,7 @@ public final class NotificationPanelViewController implements Dumpable {
                             // but we dont want them here
                             mPulseLightsView.setVisibility(View.GONE);
                         }
-                        if (ambientLights) {
+                        if (ambientLights && aodEnabled) {
                             mPulseLightHandled = false;
                             mAmbientPulseLightRunning = false;
                             // tell power manager that we want to enable aod
@@ -4467,7 +4467,7 @@ public final class NotificationPanelViewController implements Dumpable {
                 }
             } else {
                 // continue to pulse - if not screen was turned on in the meantime
-                if (activeNotif && ambientLights && mDozing && !mPulseLightHandled) {
+                if (activeNotif && ambientLights && aodEnabled && mDozing && !mPulseLightHandled) {
                     // no-op if pulseLights is also enabled
                     if (ambientLightsHideAod) {
                         showAodContent(false);
