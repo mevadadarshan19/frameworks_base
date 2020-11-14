@@ -64,4 +64,7 @@
     <!-- Bottom margin size when fingerprint in display is active -->
     <dimen name="keyguard_indication_margin_bottom_fingerprint_in_display">@dimen/keyguard_indication_margin_bottom</dimen>
 
+    <!-- Screenrecord -->
+    <dimen name="screenrecord_dot_size">48dp</dimen>
+
 </resources>
