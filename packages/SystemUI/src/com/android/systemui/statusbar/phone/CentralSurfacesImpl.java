@@ -117,11 +117,15 @@ import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.DateTimeView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleRegistry;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.colorextraction.ColorExtractor;
@@ -161,6 +165,7 @@ import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.dagger.qualifiers.UiBackground;
 import com.android.systemui.demomode.DemoMode;
 import com.android.systemui.demomode.DemoModeController;
+import com.android.systemui.derp.ambient.AmbientController;
 import com.android.systemui.dreams.DreamOverlayStateController;
 import com.android.systemui.emergency.EmergencyGesture;
 import com.android.systemui.flags.FeatureFlags;
@@ -613,6 +618,11 @@ public class CentralSurfacesImpl extends CoreStartable implements
     private int mClearAllButtonStyle;
     private boolean mShowDimissButton;
 
+    private AmbientController mAmbientController;
+    private TextView mAmbientTextView;
+    private FrameLayout mAmbientContainer;
+    private ConstraintLayout mAmbientTextContainer;
+
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     @VisibleForTesting
     protected boolean mUserSetup = false;
@@ -920,6 +930,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
         mTunerService = tunerService;
         mSysUiState = sysUiState;
         mPulseController = new PulseControllerImpl(mContext, this, mCommandQueue, mUiBgExecutor);
+        mAmbientController = new AmbientController(context, mAmbientContainer, mAmbientTextContainer, mAmbientTextView);
 
         mLockscreenShadeTransitionController = lockscreenShadeTransitionController;
         mStartingSurfaceOptional = startingSurfaceOptional;
@@ -1396,6 +1407,9 @@ public class CentralSurfacesImpl extends CoreStartable implements
         }
 
         mVisualizerView = (VisualizerView) mNotificationShadeWindowView.findViewById(R.id.visualizerview);
+        mAmbientContainer = mNotificationShadeWindowView.findViewById(R.id.ambient_container);
+        mAmbientTextContainer = mNotificationShadeWindowView.findViewById(R.id.ambient_text_container);
+        mAmbientTextView = mNotificationShadeWindowView.findViewById(R.id.ambient_text);
 
         mReportRejectedTouch = mNotificationShadeWindowView
                 .findViewById(R.id.report_rejected_touch);
@@ -3625,6 +3639,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
 
         mNotificationPanelViewController.setDozing(mDozing, animate, mWakeUpTouchLocation);
         mPulseController.setDozing(mDozing);
+        mAmbientController.setDozing(mDozing);
         updateQsExpansionEnabled();
         Trace.endSection();
     }
@@ -4950,6 +4965,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
                     updateScrimController();
                     mPresenter.updateMediaMetaData(false, mState != StatusBarState.KEYGUARD);
                     mPulseController.setKeyguardShowing(mState == StatusBarState.KEYGUARD);
+                    mAmbientController.setKeyguardShowing(mState == StatusBarState.KEYGUARD);
                     Trace.endSection();
                 }
 
@@ -4998,6 +5014,11 @@ public class CentralSurfacesImpl extends CoreStartable implements
 
     public VisualizerView getLsVisualizer() {
         return mVisualizerView;
+    }
+
+
+    public AmbientController getAmbientController() {
+        return mAmbientController;
     }
 
     private final BatteryController.BatteryStateChangeCallback mBatteryStateChangeCallback =

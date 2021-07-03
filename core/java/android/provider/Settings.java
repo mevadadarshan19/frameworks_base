@@ -6252,6 +6252,185 @@ public final class Settings {
         public static final String LOCK_HIDE_STATUS_BAR = "lockscreen_hide_status_bar";
 
         /**
+         * Ambient Text Enabled
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_ENABLED = "ambient_text_enabled";
+
+        /**
+         * Ambient Custom Text
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_CUSTOM_TEXT = "ambient_custom_text";
+
+        /**
+         * Ambient Text Color Type
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_COLOR_TYPE = "ambient_text_color_type";
+
+        /**
+         * Ambient Text Custom Color Start
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_CUSTOM_COLOR_START = "ambient_text_custom_color_start";
+
+        /**
+         * Ambient Text Custom Color Final
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_CUSTOM_COLOR_FINAL = "ambient_text_custom_color_final";
+
+        /**
+         * Ambient Text Gravity
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_GRAVITY = "ambient_text_gravity";
+
+        /**
+         * Ambient Text Vertical Location
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_VERTICAL_LOCATION = "ambient_text_vertical_location";
+
+        /**
+         * Ambient Text Horizontal Location
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_HORIZONTAL_LOCATION = "ambient_text_horizontal_location";
+
+        /**
+         * Ambient Text Hide Type
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_HIDE_TYPE = "ambient_text_hide_type";
+
+        /**
+         * Ambient Text Show Type
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SHOW_TYPE = "ambient_text_show_type";
+
+        /**
+         * Ambient Text Rotation
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_ROTATION = "ambient_text_rotation";
+
+        /**
+         * Ambient Text Font
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_FONT = "ambient_text_font";
+
+        /**
+         * Ambient Text Size
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SIZE = "ambient_text_size";
+
+        /**
+         * Ambient Text Letter Spacing
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_LETTER_SPACING = "ambient_text_letter_spacing";
+
+        /**
+         * Ambient Text Shadow
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SHADOW_ENABLED = "ambient_text_shadow_enabled";
+
+        /**
+         * Ambient Text Shadow
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SHADOW_DX = "ambient_text_shadow_dx";
+
+        /**
+         * Ambient Text Shadow
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SHADOW_DY = "ambient_text_shadow_dy";
+
+        /**
+         * Ambient Text Shadow
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SHADOW_COLOR = "ambient_text_shadow_color";
+
+        /**
+         * Ambient Text Shadow
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_SHADOW_RADIUS = "ambient_text_shadow_radius";
+
+        /**
+         * Ambient Text Mode
+         * 0 - Disable
+         * 1 - Clock
+         * 2 - Date
+         * 3 - Media Title if is avalible
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_MODE = "ambient_text_mode";
+
+        /**
+         * Ambient Text Mode
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_MODE_SEQUENCE_TIME = "ambient_text_mode_sequence_time";
+
+        /**
+         * Ambient Text Mode
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_MODE_SEQUENCE_ANIM = "ambient_text_mode_sequence_anim";
+
+        /**
+         * Ambient Text in QS
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_QS = "ambient_text_qs";
+
+        /**
+         * Ambient Text in AOD
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_AOD = "ambient_text_aod";
+
+        /**
+         * Ambient Text in Lockscreen
+         * @hide
+         */
+        @Readable
+        public static final String AMBIENT_TEXT_LOCKSCREEN = "ambient_text_lockscreen";
+
+        /**
          * IMPORTANT: If you add a new public settings you also have to add it to
          * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
          * it to PRIVATE_SETTINGS below. Also add a validator that can validate
