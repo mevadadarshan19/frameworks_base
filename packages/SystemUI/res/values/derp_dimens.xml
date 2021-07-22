@@ -79,4 +79,10 @@
     <!-- Auth ripple animation duration
          AOSP default is 1533 -->
     <item name="auth_ripple_animation_duration" format="float" type="dimen">766.5</item>
+
+    <!-- Height of the landscape battery icon in the status bar. -->
+    <dimen name="status_bar_battery_icon_height_landscape">12.5dp</dimen>
+
+    <!-- Width of the landscape battery icon in the status bar. -->
+    <dimen name="status_bar_battery_icon_width_landscape">24dp</dimen>
 </resources>
