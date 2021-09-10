@@ -186,4 +186,9 @@
 
     <!-- Autobrightness tile -->
     <string name="quick_settings_autobrightness_label">Automatische Helligkeit</string>
+
+     <!-- Data usage info in QS footer -->
+    <string name="usage_data">heute verbraucht</string>
+    <string name="usage_data_default_suffix">Mobildaten</string>
+    <string name="usage_wifi_default_suffix">WLAN</string>
 </resources>
