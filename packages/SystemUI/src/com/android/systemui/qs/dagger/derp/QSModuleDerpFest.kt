@@ -33,6 +33,7 @@ import com.android.systemui.qs.tiles.CellularTile
 import com.android.systemui.qs.tiles.WifiTile
 import com.android.systemui.qs.tiles.CompassTile
 import com.android.systemui.qs.tiles.SoundTile
+import com.android.systemui.qs.tiles.RefreshRateTile
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -136,4 +137,10 @@ interface QSModuleDerpFest {
     @IntoMap
     @StringKey(SoundTile.TILE_SPEC)
     fun bindSoundTile(soundTile: SoundTile): QSTileImpl<*>
+
+    /** Inject RefreshRateTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(RefreshRateTile.TILE_SPEC)
+    fun bindRefreshRateTile(refreshRateTile: RefreshRateTile): QSTileImpl<*>
 }
