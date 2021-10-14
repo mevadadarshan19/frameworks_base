@@ -44,4 +44,7 @@
     <!-- StatusBar burn-in protection -->
     <bool name="config_disableStatusBarBurnInProtection">false</bool>
     <integer name="config_shift_interval">60</integer>
+
+    <!-- Whether to show VoLTE icon in the status bar -->
+    <bool name="config_display_volte">true</bool>
 </resources>
