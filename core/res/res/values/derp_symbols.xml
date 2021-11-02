@@ -77,6 +77,9 @@
     <java-symbol type="array" name="keyhandler_keycodes" />
     <java-symbol type="array" name="keyhandler_packages" />
 
+    <!-- Whether device has SuperDart charging support -->
+    <java-symbol type="bool" name="config_hasSuperDartCharger" />
+
     <!-- LiveDisplay -->
     <java-symbol type="bool" name="config_enableLiveDisplay" />
     <java-symbol type="string" name="live_display_title" />
@@ -196,5 +199,8 @@
 
   <!-- Whether device has turbo power charging support -->
   <java-symbol type="bool" name="config_hasTurboPowerCharger" />
+
+  <!-- Whether device has SuperDart charging support -->
+  <java-symbol type="bool" name="config_hasSuperDartCharger" />
 
 </resources>
