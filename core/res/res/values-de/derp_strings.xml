@@ -63,4 +63,9 @@
     <string name="sleep_mode_notification_content">Antippen um den Schlafmodus zu beenden</string>
     <string name="sleep_mode_enabled_toast">Schlafmodus aktiviert</string>
     <string name="sleep_mode_disabled_toast">Schlafmodus ausgeschaltet</string>
+
+    <!-- SystemUI Restart -->
+    <string name="systemui_restart_title">SystemUI-Neustart erforderlich</string>
+    <string name="systemui_restart_message">Damit alle Änderungen wirksam werden, ist ein Neustart der SystemUI erforderlich. SystemUI jetzt neu starten?</string>
+
 </resources>
