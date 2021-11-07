@@ -74,4 +74,9 @@
     <string name="sleep_mode_notification_content">Tap to turn off sleep mode</string>
     <string name="sleep_mode_enabled_toast">Sleep mode turned on</string>
     <string name="sleep_mode_disabled_toast">Sleep mode turned off</string>
+
+    <!-- SystemUI Restart -->
+    <string name="systemui_restart_title">SystemUI restart required</string>
+    <string name="systemui_restart_message">For all changes to take effect, a SystemUI restart is required. Restart SystemUI now?</string>
+
 </resources>

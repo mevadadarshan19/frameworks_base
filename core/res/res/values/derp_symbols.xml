@@ -217,4 +217,7 @@
   <java-symbol type="string" name="sleep_mode_enabled_toast" />
   <java-symbol type="string" name="sleep_mode_disabled_toast" />
 
+  <!-- SystemUI Restart -->
+  <java-symbol type="string" name="systemui_restart_title" />
+  <java-symbol type="string" name="systemui_restart_message" />
 </resources>
