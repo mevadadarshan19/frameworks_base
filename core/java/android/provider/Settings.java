@@ -5629,6 +5629,12 @@ public final class Settings {
         public static final String ALERT_SLIDER_NOTIFICATIONS = "alert_slider_notifications";
 
         /**
+         * Controls whether double tap gesture is enabled in landscape.
+         * @hide
+         */
+        public static final String DOUBLE_TAP_NO_LANDSCAPE = "double_tap_no_landscape";
+
+        /**
          * IMPORTANT: If you add a new public settings you also have to add it to
          * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
          * it to PRIVATE_SETTINGS below. Also add a validator that can validate
@@ -5770,6 +5776,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_ADJUSTMENT);
             PRIVATE_SETTINGS.add(DISPLAY_PICTURE_ADJUSTMENT);
             PRIVATE_SETTINGS.add(LIVE_DISPLAY_HINTED);
+            PRIVATE_SETTINGS.add(DOUBLE_TAP_NO_LANDSCAPE);
         }
 
         /**
@@ -9642,7 +9649,7 @@ public final class Settings {
         public static final String ATTENTIVE_TIMEOUT = "attentive_timeout";
 
         /**
-         * Controls whether double tap to wake is enabled.
+         * Controls whether double tap gesture is enabled.
          * @hide
          */
         @Readable
