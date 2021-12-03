@@ -653,6 +653,7 @@ public final class NotificationPanelViewController implements Dumpable {
     private final NPVCDownEventState.Buffer mLastDownEvents;
     private final KeyguardBottomAreaViewModel mKeyguardBottomAreaViewModel;
     private final KeyguardBottomAreaInteractor mKeyguardBottomAreaInteractor;
+    private boolean mBlockedGesturalNavigation = false;
     private float mMinExpandHeight;
     private ShadeHeightLogger mShadeHeightLogger;
     private boolean mPanelUpdateWhenAnimatorEnds;
@@ -4765,6 +4766,10 @@ public final class NotificationPanelViewController implements Dumpable {
         );
     }
 
+    public void setBlockedGesturalNavigation(boolean blocked) {
+        mBlockedGesturalNavigation = blocked;
+    }
+
     /** Updates notification panel-specific flags on {@link SysUiState}. */
     public void updateSystemUiStateFlags() {
         if (SysUiState.DEBUG) {
@@ -4773,7 +4778,7 @@ public final class NotificationPanelViewController implements Dumpable {
         }
         mSysUiState.setFlag(SYSUI_STATE_NOTIFICATION_PANEL_EXPANDED,
                         isFullyExpanded() && !isInSettings())
-                .setFlag(SYSUI_STATE_QUICK_SETTINGS_EXPANDED, isFullyExpanded() && isInSettings())
+                .setFlag(SYSUI_STATE_QUICK_SETTINGS_EXPANDED, mBlockedGesturalNavigation || (isFullyExpanded() && isInSettings()))
                 .commitUpdate(mDisplayId);
     }
 
