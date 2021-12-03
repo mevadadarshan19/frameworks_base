@@ -542,6 +542,8 @@ public interface CentralSurfaces extends Dumpable, ActivityStarter, LifecycleOwn
 
     boolean shouldDelayWakeUpAnimation();
 
+    void setBlockedGesturalNavigation(boolean blocked);
+
     GameSpaceManager getGameSpaceManager();
 
     public static class KeyboardShortcutsMessage {
