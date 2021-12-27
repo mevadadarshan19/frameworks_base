@@ -240,6 +240,7 @@ import com.android.systemui.statusbar.policy.ConfigurationController.Configurati
 import com.android.systemui.statusbar.policy.DeviceProvisionedController;
 import com.android.systemui.statusbar.policy.DeviceProvisionedController.DeviceProvisionedListener;
 import com.android.systemui.statusbar.policy.ExtensionController;
+import com.android.systemui.statusbar.policy.GameSpaceManager;
 import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.statusbar.policy.UserInfoControllerImpl;
 import com.android.systemui.statusbar.policy.UserSwitcherController;
@@ -517,6 +518,8 @@ public class CentralSurfacesImpl extends CoreStartable implements
     private final StatusBarHideIconsForBouncerManager mStatusBarHideIconsForBouncerManager;
 
     private DerpSettingsObserver mDerpSettingsObserver;
+
+    protected GameSpaceManager mGameSpaceManager;
 
     // expanded notifications
     // the sliding/resizing panel within the notification window
@@ -907,6 +910,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
 
         mActivityIntentHelper = new ActivityIntentHelper(mContext);
         mActivityLaunchAnimator = activityLaunchAnimator;
+        mGameSpaceManager = new GameSpaceManager(mContext, mKeyguardStateController);
 
         mDerpSettingsObserver = new DerpSettingsObserver(backgroundHandler);
 
@@ -1476,6 +1480,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_CAMERA_GESTURE);
         mBroadcastDispatcher.registerReceiver(mBroadcastReceiver, filter, null, UserHandle.ALL);
+        mGameSpaceManager.observe();
     }
 
     protected QS createDefaultQSFragment() {
@@ -4532,6 +4537,11 @@ public class CentralSurfacesImpl extends CoreStartable implements
     @Override
     public NotificationGutsManager getGutsManager() {
         return mGutsManager;
+    }
+
+    @Override
+    public GameSpaceManager getGameSpaceManager() {
+        return mGameSpaceManager;
     }
 
     boolean isTransientShown() {
