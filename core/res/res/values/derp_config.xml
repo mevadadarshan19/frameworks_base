@@ -262,4 +262,7 @@
 
   <!-- Parallel space max count. Should overlay according to device performance. -->
   <integer name="config_parallelSpaceMaxCount">9</integer>
+
+  <!-- Whether to cancel fingerprint operation if not idle -->
+  <bool name="config_fpCancelIfNotIdle">false</bool>
 </resources>
