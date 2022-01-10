@@ -305,5 +305,6 @@ public class SystemSettingsValidators {
                         return new InclusiveIntegerRangeValidator(0, 1000).validate(item);
                     }
                 });
+        VALIDATORS.put(System.DISABLE_RIPPLE_EFFECT, BOOLEAN_VALIDATOR);
     }
 }
