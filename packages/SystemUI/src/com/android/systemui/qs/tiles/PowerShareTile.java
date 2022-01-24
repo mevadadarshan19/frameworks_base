@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2020 The LineageOS Project
+ * Copyright (C) 2022 Nameless-AOSP Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +61,8 @@ public class PowerShareTile extends QSTileImpl<BooleanState>
     private static final String CHANNEL_ID = "powershare";
     private static final int NOTIFICATION_ID = 273298;
 
+    private boolean mIsPluggedIn;
+
     @Inject
     public PowerShareTile(
             QSHost host,
@@ -95,12 +98,22 @@ public class PowerShareTile extends QSTileImpl<BooleanState>
         mNotification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
         mNotification.visibility = Notification.VISIBILITY_PUBLIC;
 
+        mIsPluggedIn = mBatteryController.isPluggedIn();
+
         batteryController.addCallback(this);
     }
 
     @Override
     public void onPowerSaveChanged(boolean isPowerSave) {
         refreshState();
+    }
+
+    @Override
+    public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
+        if (mIsPluggedIn != pluggedIn) {
+            mIsPluggedIn = pluggedIn;
+            refreshState();
+        }
     }
 
     @Override
@@ -166,14 +179,6 @@ public class PowerShareTile extends QSTileImpl<BooleanState>
 
     @Override
     public CharSequence getTileLabel() {
-        if (mBatteryController.isPowerSave()) {
-            return mContext.getString(R.string.quick_settings_powershare_off_powersave_label);
-        } else {
-            if (getBatteryLevel() < getMinBatteryLevel()) {
-                return mContext.getString(R.string.quick_settings_powershare_off_low_battery_label);
-            }
-        }
-
         return mContext.getString(R.string.quick_settings_powershare_label);
     }
 
@@ -197,7 +202,7 @@ public class PowerShareTile extends QSTileImpl<BooleanState>
         state.slash.isSlashed = state.value;
         state.label = mContext.getString(R.string.quick_settings_powershare_label);
 
-        if (mBatteryController.isPowerSave() || getBatteryLevel() < getMinBatteryLevel()) {
+        if (mIsPluggedIn || mBatteryController.isPowerSave() || getBatteryLevel() < getMinBatteryLevel()) {
             state.state = Tile.STATE_UNAVAILABLE;
         } else if (!state.value) {
             state.state = Tile.STATE_INACTIVE;
