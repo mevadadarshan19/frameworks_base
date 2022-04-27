@@ -112,5 +112,7 @@ public class SystemSettings {
         Settings.System.NOTIFICATION_PULSE_COLOR,
         Settings.System.NOTIFICATION_PULSE_REPEATS,
         Settings.System.NOTIFICATION_PULSE_DURATION,
+        Settings.System.QS_TILE_LABEL_HIDE,
+        Settings.System.QS_TILE_VERTICAL_LAYOUT,
     };
 }
