@@ -26,4 +26,7 @@
 
     <!-- Default for Settings.System.FORCE_SHOW_NAVBAR -->
     <integer name="def_force_show_navbar">0</integer>
+
+    <!-- Default for Settings.System.QS_TRANSPARENCY -->
+    <integer name="def_qs_transparency">85</integer>
 </resources>
