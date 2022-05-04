@@ -29,6 +29,7 @@ import com.android.systemui.plugins.qs.QSTileView;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.external.CustomTile;
 import com.android.systemui.qs.tiles.AirplaneModeTile;
+import com.android.systemui.qs.tiles.AutoBrightnessTile;
 import com.android.systemui.qs.tiles.AlarmTile;
 import com.android.systemui.qs.tiles.AmbientDisplayTile;
 import com.android.systemui.qs.tiles.AODTile;
@@ -129,6 +130,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<SoundSearchTile> mSoundSearchTileProvider;
     private final Provider<SoundTile> mSoundTileProvider;
     private final Provider<RefreshRateTile> mRefreshRateTileProvider;
+    private final Provider<AutoBrightnessTile> mAutoBrightnessTileProvider;
 
     private final Lazy<QSHost> mQsHostLazy;
     private final Provider<CustomTile.Builder> mCustomTileBuilderProvider;
@@ -181,7 +183,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<RebootTile> rebootTileProvider,
             Provider<SoundSearchTile> soundSearchTileProvider,
             Provider<SoundTile> soundTileProvider,
-            Provider<RefreshRateTile> refreshRateTileProvider) {
+            Provider<RefreshRateTile> refreshRateTileProvider,
+            Provider<AutoBrightnessTile> autoBrightnessTileProvider) {
         mQsHostLazy = qsHostLazy;
         mCustomTileBuilderProvider = customTileBuilderProvider;
 
@@ -230,6 +233,7 @@ public class QSFactoryImpl implements QSFactory {
         mSoundSearchTileProvider = soundSearchTileProvider;
         mSoundTileProvider = soundTileProvider;
         mRefreshRateTileProvider = refreshRateTileProvider;
+        mAutoBrightnessTileProvider = autoBrightnessTileProvider;
     }
 
     /** Creates a tile with a type based on {@code tileSpec} */
@@ -336,6 +340,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mSoundTileProvider.get();
             case "refresh_rate":
                 return mRefreshRateTileProvider.get();
+            case "autobrightness":
+                return mAutoBrightnessTileProvider.get();
         }
 
         // Custom tiles
