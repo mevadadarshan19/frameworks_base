@@ -112,9 +112,7 @@ public class SystemSettings {
         Settings.System.NOTIFICATION_PULSE_DURATION,
         Settings.System.ENABLE_FLOATING_ROTATION_BUTTON,
         Settings.System.STATUS_BAR_LOGO,
-        Settings.System.STATUS_BAR_LOGO_COLOR,
         Settings.System.STATUS_BAR_LOGO_POSITION,
         Settings.System.STATUS_BAR_LOGO_STYLE,
-        Settings.System.STATUS_BAR_LOGO_COLOR_ACCENT,
     };
 }
