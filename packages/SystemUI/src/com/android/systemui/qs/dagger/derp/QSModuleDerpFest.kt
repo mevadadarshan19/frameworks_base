@@ -26,6 +26,7 @@ import com.android.systemui.qs.tiles.AODTile
 import com.android.systemui.qs.tiles.SoundSearchTile
 import com.android.systemui.qs.tiles.CaffeineTile
 import com.android.systemui.qs.tiles.VpnTile
+import com.android.systemui.qs.tiles.VPNTetheringTile
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -87,4 +88,10 @@ interface QSModuleDerpFest {
     @IntoMap
     @StringKey(VpnTile.TILE_SPEC)
     fun bindVpnTile(vpnTile: VpnTile): QSTileImpl<*>
+
+    /** Inject VPNTetheringTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(VPNTetheringTile.TILE_SPEC)
+    fun bindVPNTetheringTile(vpnTetheringTile: VPNTetheringTile): QSTileImpl<*>
 }
