@@ -214,4 +214,7 @@
     <string name="turn_on_bluetooth">Bluetooth</string>
     <string name="bluetooth_is_off">Bluetooth ist ausgeschaltet</string>
     <string name="tap_a_device_to_connect">Auf ein Gerät tippen, um es zu verbinden</string>
+
+    <!-- Google Lens Screenshot string -->
+    <string name="lens_unavailable">Google Lens ist nicht installiert</string>
 </resources>
