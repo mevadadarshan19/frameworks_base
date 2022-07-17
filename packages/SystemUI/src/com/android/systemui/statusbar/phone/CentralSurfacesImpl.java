@@ -2039,6 +2039,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
         void observe() {
             mSystemSettings.registerContentObserverForUser(Settings.System.LESS_BORING_HEADS_UP, this, UserHandle.USER_ALL);
             mSystemSettings.registerContentObserverForUser(Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, this, UserHandle.USER_ALL);
+            mSystemSettings.registerContentObserverForUser(Settings.System.RETICKER_STATUS, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -2050,6 +2051,9 @@ public class CentralSurfacesImpl extends CoreStartable implements
                 case Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL:
                     setBrightnessControl();
                     break;
+                case Settings.System.RETICKER_STATUS:
+                    setUseLessBoringHeadsUp();
+                    break;
             }
         }
 
@@ -2057,6 +2061,7 @@ public class CentralSurfacesImpl extends CoreStartable implements
             mBackgroundHandler.post(() -> {
                 setUseLessBoringHeadsUp();
                 setBrightnessControl();
+                setRetickerStatus();
         });
     }
 
@@ -2071,6 +2076,14 @@ public class CentralSurfacesImpl extends CoreStartable implements
         private void setBrightnessControl() {
             mBrightnessControl = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0) == 1;
+        }
+
+        private void setRetickerStatus() {
+            final boolean reTicker = mSystemSettings.getIntForUser(
+                    Settings.System.RETICKER_STATUS, 0, UserHandle.USER_CURRENT) == 1;
+            mMainHandler.post(() -> {
+                mNotificationInterruptStateProvider.setUseReticker(reTicker);
+            });
         }
     }
 
