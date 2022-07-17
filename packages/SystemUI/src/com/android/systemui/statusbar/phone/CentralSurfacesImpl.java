@@ -2098,6 +2098,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
 
         void observe() {
             mSystemSettings.registerContentObserverForUser(Settings.System.LESS_BORING_HEADS_UP, this, UserHandle.USER_ALL);
+            mSystemSettings.registerContentObserverForUser(Settings.System.RETICKER_STATUS, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -2106,12 +2107,16 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
                 case Settings.System.LESS_BORING_HEADS_UP:
                     setUseLessBoringHeadsUp();
                     break;
+                case Settings.System.RETICKER_STATUS:
+                    setUseLessBoringHeadsUp();
+                    break;
             }
         }
 
         void update() {
             mBackgroundHandler.post(() -> {
                 setUseLessBoringHeadsUp();
+                setRetickerStatus();
         });
     }
 
@@ -2120,6 +2125,14 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
                     Settings.System.LESS_BORING_HEADS_UP, 0, UserHandle.USER_CURRENT) == 1;
             mMainHandler.post(() -> {
                 mNotificationInterruptStateProvider.setUseLessBoringHeadsUp(lessBoringHeadsUp);
+            });
+        }
+
+        private void setRetickerStatus() {
+            final boolean reTicker = mSystemSettings.getIntForUser(
+                    Settings.System.RETICKER_STATUS, 0, UserHandle.USER_CURRENT) == 1;
+            mMainHandler.post(() -> {
+                mNotificationInterruptStateProvider.setUseReticker(reTicker);
             });
         }
     }
