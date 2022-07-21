@@ -247,6 +247,8 @@ import com.android.internal.util.Preconditions;
 import com.android.internal.derp.app.LineageContextConstants;
 import com.android.internal.derp.app.LineageGlobalActions;
 import com.android.internal.derp.app.ILineageGlobalActions;
+import com.android.internal.derp.hardware.LiveDisplayManager;
+import com.android.internal.derp.hardware.ILiveDisplayService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -955,6 +957,19 @@ public final class SystemServiceRegistry {
                         final ILineageGlobalActions service =
                                 ILineageGlobalActions.Stub.asInterface(binder);
                         return new LineageGlobalActions(service);
+                    }
+                });
+
+        registerService(LineageContextConstants.LINEAGE_LIVEDISPLAY_SERVICE, LiveDisplayManager.class,
+                new CachedServiceFetcher<LiveDisplayManager>() {
+                    @Override
+                    public LiveDisplayManager createService(ContextImpl ctx)
+                            throws ServiceNotFoundException {
+                        final IBinder binder =
+                                ServiceManager.getServiceOrThrow(LineageContextConstants.LINEAGE_LIVEDISPLAY_SERVICE);
+                        final ILiveDisplayService service =
+                                ILiveDisplayService.Stub.asInterface(binder);
+                        return new LiveDisplayManager(service);
                     }
                 });
 
