@@ -80,6 +80,7 @@ LOCAL_REQUIRED_MODULES := \
 	NavigationBarModeGesturalOverlayNarrowBack \
 	NavigationBarModeGesturalOverlayWideBack \
 	NavigationBarModeGesturalOverlayExtraWideBack \
+	NotchBarKillerLeftrOverlay \
 	NotchBarKillerOverlay \
 	preinstalled-packages-platform-overlays.xml
 
