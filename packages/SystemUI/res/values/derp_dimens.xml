@@ -54,4 +54,8 @@
     <dimen name="status_bar_mobile_type_height">8dp</dimen>
     <dimen name="status_bar_mobile_type_padding">2dp</dimen>
     <dimen name="status_bar_mobile_type_padding_limit">10dp</dimen>
+
+    <!-- Lyric -->
+    <dimen name="lyric_icon_margin_end">4dp</dimen>
+    <dimen name="lyric_padding_end">4dp</dimen>
 </resources>

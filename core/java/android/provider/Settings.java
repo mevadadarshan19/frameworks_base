@@ -12406,6 +12406,18 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_QUICK_QS_PULLDOWN = "status_bar_quick_qs_pulldown";
+
+        /**
+         * Show lyric in status bar when playing music
+         * <ul>
+         *    <li> 0 = disabled </li>
+         *    <li> 1 = enabled </li>
+         * </ul>
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_LYRIC = "status_bar_show_lyric";
+
     }
 
     /**
