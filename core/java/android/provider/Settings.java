@@ -6711,6 +6711,11 @@ public final class Settings {
         public static final String STATUS_BAR_BRIGHTNESS_CONTROL = "status_bar_brightness_control";
 
         /**
+         * @hide
+         */
+        public static final String QS_DATA_USAGE_PANEL = "qs_data_usage_panel";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
@@ -6851,6 +6856,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(LOCK_HIDE_STATUS_BAR);
             PRIVATE_SETTINGS.add(BACK_GESTURE_HAPTIC);
             PRIVATE_SETTINGS.add(AMBIENT_WAKE_GESTURES);
+            PRIVATE_SETTINGS.add(QS_DATA_USAGE_PANEL);
         }
 
         /**
