@@ -26,8 +26,10 @@ import static com.android.systemui.statusbar.events.SystemStatusAnimationSchedul
 import android.annotation.Nullable;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
+import android.os.Handler;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.UserHandle;
@@ -124,6 +126,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private View mClockView;
     private View mOngoingCallChip;
     private View mNotificationIconAreaInner;
+    private View mCenterClock;
+    private View mLeftClock;
+    private View mRightClock;
     private int mDisabled1;
     private int mDisabled2;
     private DarkIconManager mDarkIconManager;
@@ -149,6 +154,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private ClockController mClockController;
     private boolean mIsClockBlacklisted;
 
+    private boolean mShowSBClockBg = true;
     private View mCustomCarrierLabel;
     private int mShowCarrierLabel;
     private LyricController mLyricController;
@@ -164,6 +170,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         }
  
         void observe() {
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUSBAR_CLOCK_CHIP),
+                    false, this, UserHandle.USER_ALL);
             mContentResolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_SHOW_CARRIER),
                     false, this, UserHandle.USER_ALL);
@@ -325,6 +334,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mCustomCarrierLabel = mStatusBar.findViewById(R.id.statusbar_carrier_text);
         mOngoingCallChip = mStatusBar.findViewById(R.id.ongoing_call_chip);
         mLeftLogo = mStatusBar.findViewById(R.id.statusbar_logo);
+        mCenterClock = mStatusBar.findViewById(R.id.clock_center);
+        mLeftClock = mStatusBar.findViewById(R.id.clock);
+        mRightClock = mStatusBar.findViewById(R.id.clock_right);
         showEndSideContent(false);
         showClock(false);
         initOperatorName();
@@ -812,6 +824,33 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     public void updateSettings(boolean animate) {
+        mShowSBClockBg = Settings.System.getIntForUser(mContentResolver,
+                Settings.System.STATUSBAR_CLOCK_CHIP, 0,
+                UserHandle.USER_CURRENT) == 1;
+
+        if (mShowSBClockBg) {
+            mLeftClock.setBackgroundResource(R.drawable.sb_date_bg);
+            mLeftClock.setPadding(10,5,10,5);
+            mCenterClock.setBackgroundResource(R.drawable.sb_date_bg);
+            mCenterClock.setPadding(10,5,10,5);
+            mRightClock.setBackgroundResource(R.drawable.sb_date_bg);
+            mRightClock.setPadding(10,5,10,5);
+        } else {
+            int clockPaddingStart = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_clock_starting_padding);
+            int clockPaddingEnd = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_clock_end_padding);
+            int leftClockPaddingStart = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_left_clock_starting_padding);
+            int leftClockPaddingEnd = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_left_clock_end_padding);
+            mLeftClock.setBackgroundResource(0);
+            mLeftClock.setPadding(leftClockPaddingStart, 0, leftClockPaddingEnd, 0);
+            mCenterClock.setBackgroundResource(0);
+            mCenterClock.setPadding(0,0,0,0);
+            mRightClock.setBackgroundResource(0);
+            mRightClock.setPadding(clockPaddingStart, 0, clockPaddingEnd, 0);
+        }
         mShowCarrierLabel = Settings.System.getIntForUser(mContentResolver,
                 Settings.System.STATUS_BAR_SHOW_CARRIER, 1,
                 UserHandle.USER_CURRENT);
