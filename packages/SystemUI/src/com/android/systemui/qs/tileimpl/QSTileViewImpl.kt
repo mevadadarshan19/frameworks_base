@@ -163,7 +163,7 @@ open class QSTileViewImpl @JvmOverloads constructor(
         vertical = QSLayoutUtils.getQSTileVerticalLayout(context)
         if (vertical) {
             orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER_HORIZONTAL
+            gravity = Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL
         } else {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL or Gravity.START
@@ -220,7 +220,7 @@ open class QSTileViewImpl @JvmOverloads constructor(
         vertical = QSLayoutUtils.getQSTileVerticalLayout(context)
         if (vertical) {
             orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER_HORIZONTAL
+            gravity = Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL
         } else {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL or Gravity.START
@@ -304,7 +304,8 @@ open class QSTileViewImpl @JvmOverloads constructor(
         // is too short.
         val constrainedSquishiness = constrainSquishiness(squishinessFraction)
         bottom = top + (actualHeight * constrainedSquishiness).toInt()
-        scrollY = (actualHeight - height) / 2
+        scrollY = (actualHeight - height) / if (vertical) 7 else 2
+        label.alpha = if (!vertical) 1.0f else Math.pow(squishinessFraction.toDouble(), 7.0).toFloat()
     }
 
     override fun updateAccessibilityOrder(previousView: View?): View {
