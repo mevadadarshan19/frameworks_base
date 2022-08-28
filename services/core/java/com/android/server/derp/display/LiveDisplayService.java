@@ -72,13 +72,12 @@ public class LiveDisplayService extends SystemService {
 
     private static final String TAG = "LiveDisplay";
 
-    private final Context mContext;
-    private final Handler mHandler;
-    private final ServiceThread mHandlerThread;
+    private Handler mHandler;
+    private ServiceThread mHandlerThread;
 
     private DisplayManager mDisplayManager;
     private ModeObserver mModeObserver;
-    private final TwilightTracker mTwilightTracker;
+    private TwilightTracker mTwilightTracker;
 
     private boolean mAwaitingNudge = true;
     private boolean mSunset = false;
@@ -120,19 +119,15 @@ public class LiveDisplayService extends SystemService {
 
     public LiveDisplayService(Context context) {
         super(context);
-
-        mContext = context;
-
-        mHandlerThread = new ServiceThread(TAG,
-                Process.THREAD_PRIORITY_DEFAULT, false /*allowIo*/);
-        mHandlerThread.start();
-        mHandler = new Handler(mHandlerThread.getLooper());
-
-        mTwilightTracker = new TwilightTracker(context);
     }
 
     @Override
     public void onStart() {
+        mHandlerThread = new ServiceThread(TAG,
+                Process.THREAD_PRIORITY_DEFAULT, false /*allowIo*/);
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper());
+        mTwilightTracker = new TwilightTracker(getContext());
         publishBinderService(LineageContextConstants.LINEAGE_LIVEDISPLAY_SERVICE, mBinder);
     }
 
@@ -142,16 +137,16 @@ public class LiveDisplayService extends SystemService {
 
             mAwaitingNudge = getSunsetCounter() < 1;
 
-            mDHC = new DisplayHardwareController(mContext, mHandler);
+            mDHC = new DisplayHardwareController(getContext(), mHandler);
             mFeatures.add(mDHC);
 
-            mCTC = new ColorTemperatureController(mContext, mHandler, mDHC);
+            mCTC = new ColorTemperatureController(getContext(), mHandler, mDHC);
             mFeatures.add(mCTC);
 
-            mOMC = new OutdoorModeController(mContext, mHandler);
+            mOMC = new OutdoorModeController(getContext(), mHandler);
             mFeatures.add(mOMC);
 
-            mPAC = new PictureAdjustmentController(mContext, mHandler);
+            mPAC = new PictureAdjustmentController(getContext(), mHandler);
             mFeatures.add(mPAC);
 
             // Get capabilities, throw out any unused features
@@ -164,7 +159,7 @@ public class LiveDisplayService extends SystemService {
             }
 
             // static config
-            int defaultMode = mContext.getResources().getInteger(
+            int defaultMode = getContext().getResources().getInteger(
                     com.android.internal.R.integer.config_defaultLiveDisplayMode);
 
             mConfig = new LiveDisplayConfig(capabilities, defaultMode,
@@ -235,7 +230,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setMode(int mode) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             if (!mConfig.hasModeSupport()) {
                 return false;
@@ -250,7 +245,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setColorAdjustment(float[] adj) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             return mDHC.setColorAdjustment(adj);
         }
@@ -262,7 +257,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public  boolean setAutoContrastEnabled(boolean enabled) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             return mDHC.setAutoContrastEnabled(enabled);
         }
@@ -274,7 +269,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setCABCEnabled(boolean enabled) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             return mDHC.setCABCEnabled(enabled);
         }
@@ -286,7 +281,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setColorEnhancementEnabled(boolean enabled) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             return mDHC.setColorEnhancementEnabled(enabled);
         }
@@ -298,7 +293,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setAutomaticOutdoorModeEnabled(boolean enabled) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             return mOMC.setAutomaticOutdoorModeEnabled(enabled);
         }
@@ -310,7 +305,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setDayColorTemperature(int temperature) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             mCTC.setDayColorTemperature(temperature);
             return true;
@@ -323,7 +318,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setNightColorTemperature(int temperature) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             mCTC.setNightColorTemperature(temperature);
             return true;
@@ -345,7 +340,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
-            mContext.enforceCallingOrSelfPermission(android.Manifest.permission.DUMP, TAG);
+            getContext().enforceCallingOrSelfPermission(android.Manifest.permission.DUMP, TAG);
 
             pw.println();
             pw.println("LiveDisplay Service State:");
@@ -371,7 +366,7 @@ public class LiveDisplayService extends SystemService {
 
         @Override
         public boolean setAntiFlickerEnabled(boolean enabled) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.MANAGE_LIVEDISPLAY", null);
             return mDHC.setAntiFlickerEnabled(enabled);
         }
@@ -428,7 +423,7 @@ public class LiveDisplayService extends SystemService {
         ModeObserver(Handler handler) {
             super(handler);
 
-            final ContentResolver cr = mContext.getContentResolver();
+            final ContentResolver cr = getContext().getContentResolver();
             cr.registerContentObserver(MODE_SETTING, false, this, UserHandle.USER_ALL);
 
             observe();
@@ -479,7 +474,7 @@ public class LiveDisplayService extends SystemService {
     private int getSunsetCounter() {
         // Counter used to determine when we should tell the user about this feature.
         // If it's not used after 3 sunsets, we'll show the hint once.
-        return Settings.System.getIntForUser(mContext.getContentResolver(),
+        return Settings.System.getIntForUser(getContext().getContentResolver(),
                 Settings.System.LIVE_DISPLAY_HINTED,
                 -3,
                 UserHandle.USER_CURRENT);
@@ -487,7 +482,7 @@ public class LiveDisplayService extends SystemService {
 
 
     private void updateSunsetCounter(int count) {
-        Settings.System.putIntForUser(mContext.getContentResolver(),
+        Settings.System.putIntForUser(getContext().getContentResolver(),
                 Settings.System.LIVE_DISPLAY_HINTED,
                 count,
                 UserHandle.USER_CURRENT);
@@ -531,22 +526,22 @@ public class LiveDisplayService extends SystemService {
         if (counter == 0) {
             //show the notification and don't come back here
             final Intent intent = new Intent("lineageos.settings.LIVEDISPLAY_SETTINGS");
-            PendingIntent result = PendingIntent.getActivity(mContext, 0, intent,
+            PendingIntent result = PendingIntent.getActivity(getContext(), 0, intent,
                     PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification.Builder builder = new Notification.Builder(mContext)
-                    .setContentTitle(mContext.getResources().getString(
+            Notification.Builder builder = new Notification.Builder(getContext())
+                    .setContentTitle(getContext().getResources().getString(
                             com.android.internal.R.string.live_display_title))
-                    .setContentText(mContext.getResources().getString(
+                    .setContentText(getContext().getResources().getString(
                             com.android.internal.R.string.live_display_hint))
                     .setSmallIcon(com.android.internal.R.drawable.ic_livedisplay_notif)
-                    .setStyle(new Notification.BigTextStyle().bigText(mContext.getResources()
+                    .setStyle(new Notification.BigTextStyle().bigText(getContext().getResources()
                              .getString(
                                      com.android.internal.R.string.live_display_hint)))
                     .setContentIntent(result)
                     .setAutoCancel(true);
 
             NotificationManager nm =
-                    (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                    (NotificationManager)getContext().getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notifyAsUser(null, 1, builder.build(), UserHandle.CURRENT);
 
             updateSunsetCounter(1);
@@ -554,12 +549,12 @@ public class LiveDisplayService extends SystemService {
     }
 
     private int getInt(String setting, int defValue) {
-        return Settings.System.getIntForUser(mContext.getContentResolver(),
+        return Settings.System.getIntForUser(getContext().getContentResolver(),
                 setting, defValue, UserHandle.USER_CURRENT);
     }
 
     private void putInt(String setting, int value) {
-        Settings.System.putIntForUser(mContext.getContentResolver(),
+        Settings.System.putIntForUser(getContext().getContentResolver(),
                 setting, value, UserHandle.USER_CURRENT);
     }
 }
