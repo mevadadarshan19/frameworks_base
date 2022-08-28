@@ -39,9 +39,6 @@ public class LineageHardwareService extends SystemService {
     private static final boolean DEBUG = true;
     private static final String TAG = LineageHardwareService.class.getSimpleName();
 
-    private final Context mContext;
-    private final LineageHardwareInterface mLineageHwImpl;
-
     private interface LineageHardwareInterface {
         public int getSupportedFeatures();
         public boolean get(int feature);
@@ -87,7 +84,7 @@ public class LineageHardwareService extends SystemService {
         private int mSupportedFeatures = 0;
 
         public LegacyLineageHardware() {
-            mAcceleratedTransform = mContext.getResources().getBoolean(
+            mAcceleratedTransform = getContext().getResources().getBoolean(
                     com.android.internal.R.bool.config_setColorTransformAccelerated);
             if (mAcceleratedTransform) {
                 mDTMService = LocalServices.getService(DisplayTransformManager.class);
@@ -169,14 +166,10 @@ public class LineageHardwareService extends SystemService {
 
     }
 
-    private LineageHardwareInterface getImpl(Context context) {
-        return new LegacyLineageHardware();
-    }
+    private LineageHardwareInterface mLineageHwImpl;
 
     public LineageHardwareService(Context context) {
         super(context);
-        mContext = context;
-        mLineageHwImpl = getImpl(context);
     }
 
     @Override
@@ -184,13 +177,14 @@ public class LineageHardwareService extends SystemService {
         if (phase == PHASE_BOOT_COMPLETED) {
             Intent intent = new Intent("lineageos.intent.action.INITIALIZE_LINEAGE_HARDWARE");
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-            mContext.sendBroadcastAsUser(intent, UserHandle.ALL,
+            getContext().sendBroadcastAsUser(intent, UserHandle.ALL,
                     "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS");
         }
     }
 
     @Override
     public void onStart() {
+        mLineageHwImpl = new LegacyLineageHardware();
         publishBinderService(LineageContextConstants.LINEAGE_HARDWARE_SERVICE, mService);
     }
 
@@ -202,14 +196,14 @@ public class LineageHardwareService extends SystemService {
 
         @Override
         public int getSupportedFeatures() {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             return mLineageHwImpl.getSupportedFeatures();
         }
 
         @Override
         public boolean get(int feature) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(feature)) {
                 Log.e(TAG, "feature " + feature + " is not supported");
@@ -220,7 +214,7 @@ public class LineageHardwareService extends SystemService {
 
         @Override
         public boolean set(int feature, boolean enable) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(feature)) {
                 Log.e(TAG, "feature " + feature + " is not supported");
@@ -231,7 +225,7 @@ public class LineageHardwareService extends SystemService {
 
         @Override
         public int[] getDisplayColorCalibration() {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_COLOR_CALIBRATION)) {
                 Log.e(TAG, "Display color calibration is not supported");
@@ -242,7 +236,7 @@ public class LineageHardwareService extends SystemService {
 
         @Override
         public boolean setDisplayColorCalibration(int[] rgb) {
-            mContext.enforceCallingOrSelfPermission(
+            getContext().enforceCallingOrSelfPermission(
                     "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_COLOR_CALIBRATION)) {
                 Log.e(TAG, "Display color calibration is not supported");
