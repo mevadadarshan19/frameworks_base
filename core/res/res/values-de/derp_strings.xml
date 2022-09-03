@@ -48,4 +48,7 @@
 
     <!-- Face unlock -->
     <string name="face_unlock_disabled_idle">Gesichtserkennung wegen Inaktivität deaktiviert</string>
+
+    <!-- Cycle through ringer modes -->
+    <string name="volume_dialog_ringer_guidance_normal">Anrufe und Benachrichtigungen werden klingeln</string>
 </resources>
