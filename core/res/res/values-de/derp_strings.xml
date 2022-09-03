@@ -48,4 +48,6 @@
     <string name="reboot_system_title">System-Neustart</string>
     <string name="reboot_system_message">System-Neustart</string>
 
+    <!-- Cycle through ringer modes -->
+    <string name="volume_dialog_ringer_guidance_normal">Anrufe und Benachrichtigungen werden klingeln</string>
 </resources>
