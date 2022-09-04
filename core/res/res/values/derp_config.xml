@@ -208,4 +208,7 @@
        Used to decide if we show pulse settings -->
   <bool name="config_ledCanPulse">true</bool>
 
+  <!-- Wether to handle audio direction changes between major call states -->
+  <bool name="config_handleAudioDirectionChangesBetweenCallStateChanges">true</bool>
+
 </resources>
