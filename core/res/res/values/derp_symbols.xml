@@ -145,4 +145,7 @@
   <!-- Horizon Light -->
   <java-symbol type="integer" name="config_AmbientPulseLightColor" />
 
+  <!-- Location indicator -->
+  <java-symbol type="drawable" name="stat_sys_location" />
+
 </resources>
