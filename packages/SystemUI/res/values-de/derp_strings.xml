@@ -178,4 +178,10 @@
     <!-- Refresh Rate Tile -->
     <string name="refresh_rate_tile_label">Aktualisierungsrate</string>
     <string name="auto_mode_label">Auto</string>
+
+    <!-- QuickSettings: InternetDialog: Summary for how many devices are connected to the hotspot [CHAR LIMIT=NONE] -->
+    <plurals name="quick_settings_internet_hotspot_summary_num_devices">
+        <item quantity="one">%d Gerät verbunden</item>
+        <item quantity="other">%d Geräte verbunden</item>
+    </plurals>
 </resources>
