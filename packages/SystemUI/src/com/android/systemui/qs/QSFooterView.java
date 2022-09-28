@@ -69,7 +69,7 @@ public class QSFooterView extends FrameLayout {
     private boolean mExpanded;
     private float mExpansionAmount;
 
-    private boolean mShouldShowBuildText;
+    private boolean mShouldShowUsageText;
 
     @Nullable
     private OnClickListener mExpandClickListener;
@@ -77,6 +77,7 @@ public class QSFooterView extends FrameLayout {
     private DataUsageController mDataController;
     private SubscriptionManager mSubManager;
 
+    private boolean mHasNoSims;
     private boolean mIsWifiConnected;
     private String mWifiSsid;
 
@@ -183,6 +184,7 @@ public class QSFooterView extends FrameLayout {
             setUsageText();
         }
     }
+
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -255,12 +257,12 @@ public class QSFooterView extends FrameLayout {
     void updateEverything() {
         post(() -> {
             updateVisibilities();
+            setUsageText();
             setClickable(false);
         });
     }
 
     private void updateVisibilities() {
-        mUsageText.setVisibility(mExpanded ? View.VISIBLE : View.INVISIBLE);
-        if (mExpanded) setUsageText();
+        mUsageText.setVisibility(mExpanded && mShouldShowUsageText ? View.VISIBLE : View.INVISIBLE);
     }
 }
