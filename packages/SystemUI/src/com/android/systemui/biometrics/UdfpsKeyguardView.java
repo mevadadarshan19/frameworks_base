@@ -27,6 +27,7 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.MathUtils;
@@ -193,8 +194,15 @@ public class UdfpsKeyguardView extends UdfpsAnimationView {
         if (!mFullyInflated) {
             return;
         }
-
+        boolean udfps_icon_accent = Settings.System.getIntForUser(getContext().getContentResolver(),
+                Settings.System.UDFPS_ICON_ACCENT, 0, UserHandle.USER_CURRENT) == 1;
+        if(udfps_icon_accent) {
+        mTextColorPrimary = Utils.getColorAttrDefaultColor(getContext(),
+                com.android.systemui.R.attr.wallpaperTextColorAccent);
+        }
+        else {
         mTextColorPrimary = getContext().getColor(R.color.keyguard_button_fg_color);
+        }
         mLockScreenFp.invalidate(); // updated with a valueCallback
     }
 

@@ -6687,6 +6687,12 @@ public final class Settings {
         public static final String FINGERPRINT_SUCCESS_VIB = "fingerprint_success_vib";
 
         /**
+         * Apply accent color to UDFPS icon
+         * @hide
+         */
+         public static final String UDFPS_ICON_ACCENT = "udfps_icon_accent";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
