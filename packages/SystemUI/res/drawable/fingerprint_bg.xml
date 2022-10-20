@@ -20,7 +20,7 @@
     <solid
       android:color="@color/keyguard_button_bg_color"/>
 
-    <size
-        android:width="64dp"
-        android:height="64dp"/>
+    <size 
+      android:height="@dimen/keyguard_affordance_fixed_height" 
+      android:width="@dimen/keyguard_affordance_fixed_width"/>
 </shape>
