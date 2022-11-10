@@ -30,6 +30,8 @@ import static android.view.Surface.ROTATION_0;
 import static android.view.Surface.ROTATION_270;
 import static android.view.Surface.ROTATION_90;
 
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_GESTURAL;
+
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -226,10 +228,13 @@ public class DisplayLayout {
         if (mHasStatusBar) {
             convertNonDecorInsetsToStableInsets(res, mStableInsets, mCutout, mHasStatusBar);
         }
-        if (mIsHideIMESpaceEnabled) {
-          mNavBarFrameHeight = getNavigationBarFrameHeightHidden(res, mWidth > mHeight);
+
+        int mode = res.getInteger(
+            com.android.internal.R.integer.config_navBarInteractionMode);
+        if (mIsHideIMESpaceEnabled && (mode == NAV_BAR_MODE_GESTURAL)) {
+            mNavBarFrameHeight = getNavigationBarFrameHeightHidden(res, mWidth > mHeight);
         } else {
-          mNavBarFrameHeight = getNavigationBarFrameHeight(res, mWidth > mHeight);
+            mNavBarFrameHeight = getNavigationBarFrameHeight(res, mWidth > mHeight);
         }
     }
 
