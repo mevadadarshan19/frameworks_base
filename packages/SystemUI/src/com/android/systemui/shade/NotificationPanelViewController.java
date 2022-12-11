@@ -1358,7 +1358,6 @@ public final class NotificationPanelViewController implements Dumpable {
         mNotificationContainerParent.removeView(keyguardStatusView);
         keyguardStatusView = (KeyguardStatusView) mLayoutInflater.inflate(
                 R.layout.keyguard_status_view, mNotificationContainerParent, false);
-        mKeyguardStatusView = keyguardStatusView;
         mNotificationContainerParent.addView(keyguardStatusView, statusIndex);
         // When it's reinflated, this is centered by default. If it shouldn't be, this will update
         // below when resources are updated.
@@ -3232,7 +3231,7 @@ public final class NotificationPanelViewController implements Dumpable {
         }
         mKeyguardStatusViewController.setViewVisible(show);
         mKeyguardStatusBar.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
-        mKeyguardBottomArea.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        mKeyguardIndicationController.setVisible(show);
     }
 
     public void setAmbientIndicationTop(int ambientIndicationTop, boolean ambientTextVisible) {
