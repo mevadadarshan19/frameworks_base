@@ -19,11 +19,9 @@ import static com.android.settingslib.mobile.MobileMappings.getDefaultIcons;
 import static com.android.settingslib.mobile.MobileMappings.getIconKey;
 import static com.android.settingslib.mobile.MobileMappings.mapIconSets;
 
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.net.NetworkCapabilities;
@@ -379,8 +377,6 @@ public class MobileSignalController extends SignalController<MobileState, Mobile
             mReceiverHandler.post(mTryRegisterIms);
         }
 
-        mContext.registerReceiver(mVolteSwitchObserver,
-                new IntentFilter("org.codeaurora.intent.action.ACTION_ENHANCE_4G_SWITCH"));
         mFeatureConnector.connect();
     }
 
@@ -414,7 +410,6 @@ public class MobileSignalController extends SignalController<MobileState, Mobile
         mMobileStatusTracker.setListening(false);
         mContext.getContentResolver().unregisterContentObserver(mObserver);
         mImsMmTelManager.unregisterImsRegistrationCallback(mRegistrationCallback);
-        mContext.unregisterReceiver(mVolteSwitchObserver);
         mFeatureConnector.disconnect();
     }
 
@@ -1041,13 +1036,6 @@ public class MobileSignalController extends SignalController<MobileState, Mobile
                     + " isVideoCapable=" + mCurrentState.videoCapable);
             mContext.sendBroadcast(new Intent(IMS_STATUS_CHANGED));
             notifyListenersIfNecessary();
-        }
-    };
-
-    private final BroadcastReceiver mVolteSwitchObserver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            Log.d(mTag, "action=" + intent.getAction());
-            notifyListeners();
         }
     };
 
