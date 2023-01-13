@@ -58,7 +58,8 @@ public class PixelPropsUtils {
             "com.android.chrome",
             "com.android.vending",
             "com.breel.wallpapers20",
-            "com.nothing.smartcenter"
+            "com.nothing.smartcenter",
+            "com.snapchat.android"
     };
 
     private static final String[] packagesToKeep = {
