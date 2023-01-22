@@ -36,6 +36,7 @@ import com.android.systemui.qs.tiles.SoundTile
 import com.android.systemui.qs.tiles.RefreshRateTile
 import com.android.systemui.qs.tiles.DerpSpaceTile
 import com.android.systemui.qs.tiles.PreferredNetworkTile
+import com.android.systemui.qs.tiles.LocaleTile
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -157,4 +158,10 @@ interface QSModuleDerpFest {
     @IntoMap
     @StringKey(PreferredNetworkTile.TILE_SPEC)
     fun bindPreferredNetworkTile(preferredNetworkTile: PreferredNetworkTile): QSTileImpl<*>
+
+    /** Inject LocaleTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(LocaleTile.TILE_SPEC)
+    fun bindLocaleTile(localeTile: LocaleTile): QSTileImpl<*>
 }
