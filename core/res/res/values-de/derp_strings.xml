@@ -45,4 +45,7 @@
 
     <!-- App lock -->
     <string name="unlock_application">Entsperre <xliff:g id="label" example="Telegram">%1$s</xliff:g></string>
+
+    <!-- Face unlock -->
+    <string name="face_unlock_disabled_idle">Gesichtserkennung wegen Inaktivität deaktiviert</string>
 </resources>
