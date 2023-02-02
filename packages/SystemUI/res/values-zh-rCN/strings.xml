@@ -1050,4 +1050,8 @@
     <string name="camera_and_microphone_blocked_dream_overlay_content_description" msgid="7891078093416249764">"已禁用摄像头和麦克风"</string>
     <string name="microphone_blocked_dream_overlay_content_description" msgid="5466897982130007033">"已禁用麦克风"</string>
     <string name="priority_mode_dream_overlay_content_description" msgid="6044561000253314632">"已开启优先模式"</string>
+
+    <!-- Bluetooth dialog -->
+    <string name="bluetooth_is_off">蓝牙已经关闭</string>
+    <string name="tap_a_device_to_connect">点按设备来连接</string>
 </resources>
