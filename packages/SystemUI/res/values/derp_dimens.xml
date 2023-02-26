@@ -76,10 +76,6 @@
     <dimen name="udfps_animation_size">280dp</dimen>
     <dimen name="udfps_animation_offset">0dp</dimen>
 
-    <!-- Auth ripple animation duration
-         AOSP default is 1533 -->
-    <item name="auth_ripple_animation_duration" format="float" type="dimen">766.5</item>
-
     <!-- Height of the landscape battery icon in the status bar. -->
     <dimen name="status_bar_battery_icon_height_landscape">10.5dp</dimen>
 

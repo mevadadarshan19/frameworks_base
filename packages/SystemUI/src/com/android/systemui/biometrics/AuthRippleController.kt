@@ -91,17 +91,9 @@ class AuthRippleController @Inject constructor(
         get() = Settings.System.getIntForUser(context.contentResolver,
             Settings.System.DISABLE_RIPPLE_EFFECT, 0, UserHandle.USER_CURRENT) == 1
 
-    private var animationDuration: Long
-
-    init {
-        animationDuration = sysuiContext.resources.getFloat(
-                R.dimen.auth_ripple_animation_duration).toLong()
-    }
-
     override fun onInit() {
         mView.setAlphaInDuration(sysuiContext.resources.getInteger(
                 R.integer.auth_ripple_alpha_in_duration).toLong())
-        mView.setAnimationDuration(animationDuration)
     }
 
     @VisibleForTesting
@@ -208,7 +200,7 @@ class AuthRippleController @Inject constructor(
                 lightRevealScrimAnimator?.cancel()
                 lightRevealScrimAnimator = ValueAnimator.ofFloat(.1f, 1f).apply {
                     interpolator = Interpolators.LINEAR_OUT_SLOW_IN
-                    duration = animationDuration
+                    duration = RIPPLE_ANIMATION_DURATION
                     startDelay = keyguardStateController.keyguardFadingAwayDelay
                     addUpdateListener { animator ->
                         if (lightRevealScrim.revealEffect != circleReveal) {
@@ -406,5 +398,9 @@ class AuthRippleController @Inject constructor(
             pw.println("invalid command")
             help(pw)
         }
+    }
+
+    companion object {
+        const val RIPPLE_ANIMATION_DURATION: Long = 1533
     }
 }
