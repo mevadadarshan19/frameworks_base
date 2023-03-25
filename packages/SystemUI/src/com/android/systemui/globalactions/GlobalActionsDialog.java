@@ -87,6 +87,7 @@ import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.GlobalActions.GlobalActionsManager;
 import com.android.systemui.plugins.GlobalActionsPanelPlugin;
 import com.android.systemui.settings.UserContextProvider;
+import com.android.systemui.settings.UserTracker;
 import com.android.systemui.statusbar.NotificationShadeWindowController;
 import com.android.systemui.statusbar.VibratorHelper;
 import com.android.systemui.statusbar.phone.CentralSurfaces;
@@ -185,6 +186,7 @@ public class GlobalActionsDialog extends GlobalActionsDialogLite
             @NonNull VibratorHelper vibrator,
             @Main Resources resources,
             ConfigurationController configurationController,
+            UserTracker userTracker,
             ActivityStarter activityStarter,
             KeyguardStateController keyguardStateController,
             UserManager userManager,
@@ -219,6 +221,7 @@ public class GlobalActionsDialog extends GlobalActionsDialogLite
                 vibrator,
                 resources,
                 configurationController,
+                userTracker,
                 keyguardStateController,
                 userManager,
                 trustManager,
