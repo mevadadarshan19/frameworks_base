@@ -266,7 +266,7 @@ class ControlActionCoordinatorImpl @Inject constructor(
             return
         }
         if (!featureFlags.isEnabled(Flags.USE_APP_PANELS)) {
-            controlsSettingsDialogManager.maybeShowDialog(activityContext) {}
+            controlsSettingsDialogManager.maybeShowDialog(activityContext!!) {}
         }
     }
 
