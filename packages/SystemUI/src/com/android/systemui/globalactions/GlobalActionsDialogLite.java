@@ -458,7 +458,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
         mConfigurationController.removeCallback(this);
     }
 
-    protected Context getContext() {
+    public Context getContext() {
         return mContext;
     }
 
@@ -475,7 +475,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
     }
 
     public void showOrHideDialog(boolean keyguardShowing, boolean isDeviceProvisioned,
-            @Nullable View v, GlobalActionsPanelPlugin walletPlugin) {
+            @Nullable Expandable v, GlobalActionsPanelPlugin walletPlugin) {
         showOrHideDialog(keyguardShowing, isDeviceProvisioned, v);
     }
 
