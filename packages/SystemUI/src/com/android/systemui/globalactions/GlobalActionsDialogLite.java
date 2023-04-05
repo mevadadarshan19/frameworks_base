@@ -2605,7 +2605,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
                     @Override
                     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                             float distanceY) {
-                        if (distanceY < 0 && distanceY > distanceX
+                        if (e1 != null && distanceY < 0 && distanceY > distanceX
                                 && e1.getY() <= mCentralSurfacesOptional.map(
                                         CentralSurfaces::getStatusBarHeight).orElse(0)) {
                             // Downwards scroll from top
