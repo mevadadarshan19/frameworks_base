@@ -195,7 +195,7 @@ public class UdfpsKeyguardView extends UdfpsAnimationView {
             return;
         }
         boolean udfps_icon_accent = Settings.System.getIntForUser(getContext().getContentResolver(),
-                Settings.System.UDFPS_ICON_ACCENT, 1, UserHandle.USER_CURRENT) == 1;
+                Settings.System.UDFPS_ICON_ACCENT, 0, UserHandle.USER_CURRENT) == 1;
         if(udfps_icon_accent) {
         mTextColorPrimary = Utils.getColorAttrDefaultColor(getContext(),
                 com.android.systemui.R.attr.wallpaperTextColorAccent);
