@@ -443,7 +443,6 @@ public class KeyguardStatusBarViewController extends ViewController<KeyguardStat
      */
     public void updateViewState() {
         if (!isKeyguardShowing()) {
-            mView.setVisibility(View.GONE);
             return;
         }
 
