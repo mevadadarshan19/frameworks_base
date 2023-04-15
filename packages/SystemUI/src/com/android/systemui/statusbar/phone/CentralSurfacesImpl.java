@@ -1645,6 +1645,9 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces, Tune
             case 6:
                 mDismissAllButton.setBackground(mContext.getTheme().getDrawable(R.drawable.dismiss_all_background6));
                 break;
+            case 7:
+                mDismissAllButton.setBackground(mContext.getTheme().getDrawable(R.drawable.dismiss_all_background7));
+                break;
             default:
                 mDismissAllButton.setBackground(mContext.getTheme().getDrawable(R.drawable.dismiss_all_background));
                 break;
