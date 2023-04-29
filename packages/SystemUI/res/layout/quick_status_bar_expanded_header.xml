@@ -37,7 +37,7 @@
     <LinearLayout
         android:id="@+id/layout_header"
         android:layout_width="match_parent"          
-        android:layout_height="@*android:dimen/quick_qs_offset_height"
+        android:layout_height="@dimen/qs_header_image_height"
         android:background="#00000000" >
 
         <LinearLayout
@@ -51,9 +51,7 @@
           <ImageView 
               android:id="@+id/qs_header_image_view"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"    
-              android:layout_marginTop="@dimen/qs_header_image_top_margin"
-              android:layout_marginBottom="@dimen/qs_header_image_bottom_margin"
+              android:layout_height="match_parent"
               android:scaleType="centerCrop"
               android:visibility="gone"
               android:background="@drawable/qs_header_image_view_outline" />

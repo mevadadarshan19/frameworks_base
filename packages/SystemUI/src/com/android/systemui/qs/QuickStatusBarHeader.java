@@ -206,8 +206,8 @@ public class QuickStatusBarHeader extends FrameLayout implements
         mQsHeaderImageView = findViewById(R.id.qs_header_image_view);
         mQsHeaderImageView.setClipToOutline(true);
 
-        updateResources();
         updateSettings();
+        updateResources();
         Configuration config = mContext.getResources().getConfiguration();
         setDatePrivacyContainersWidth(config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 
@@ -274,9 +274,6 @@ public class QuickStatusBarHeader extends FrameLayout implements
         if (mDatePrivacyView.getMeasuredHeight() != mTopViewMeasureHeight) {
             mTopViewMeasureHeight = mDatePrivacyView.getMeasuredHeight();
         }
-        if (mQsHeaderLayout.getMeasuredHeight() != mTopViewMeasureHeight) {
-            mTopViewMeasureHeight = mQsHeaderLayout.getMeasuredHeight();
-        }
         updateAnimators();
     }
 
@@ -284,7 +281,6 @@ public class QuickStatusBarHeader extends FrameLayout implements
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         updateResources();
-        updateStatusbarProperties();
         setDatePrivacyContainersWidth(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
@@ -328,6 +324,7 @@ public class QuickStatusBarHeader extends FrameLayout implements
         Resources resources = mContext.getResources();
         boolean largeScreenHeaderActive =
                 LargeScreenUtils.shouldUseLargeScreenShadeHeader(resources);
+        int orientation = getResources().getConfiguration().orientation;
 
         boolean gone = largeScreenHeaderActive || mUseCombinedQSHeader || mQsDisabled;
         mStatusIconsView.setVisibility(gone ? View.GONE : View.VISIBLE);
@@ -338,12 +335,7 @@ public class QuickStatusBarHeader extends FrameLayout implements
         mRoundedCornerPadding = resources.getDimensionPixelSize(
                 R.dimen.rounded_corner_content_padding);
 
-        int qsOffsetHeight = SystemBarUtils.getQuickQsOffsetHeight(mContext)
-                 + (mHeaderImageEnabled ?
-                resources.getDimensionPixelSize(R.dimen.qs_header_image_offset) : 0);
-
-        int statusBarSideMargin = mContext.getResources().getDimensionPixelSize(
-                R.dimen.qs_header_image_side_margin);
+        int qsOffsetHeight = SystemBarUtils.getQuickQsOffsetHeight(mContext);
 
         mDatePrivacyView.getLayoutParams().height =
                 Math.max(qsOffsetHeight, mDatePrivacyView.getMinimumHeight());
@@ -361,10 +353,11 @@ public class QuickStatusBarHeader extends FrameLayout implements
         }
         setLayoutParams(lp);
 
-        int textColor = Utils.getColorAttrDefaultColor(mContext, android.R.attr.textColorPrimary);
+        int textColor = mHeaderImageEnabled ? Color.WHITE :
+                Utils.getColorAttrDefaultColor(mContext, android.R.attr.textColorPrimary);
         if (textColor != mTextColorPrimary) {
-            int textColorSecondary = Utils.getColorAttrDefaultColor(mContext,
-                    android.R.attr.textColorSecondary);
+            int textColorSecondary = mHeaderImageEnabled ? Utils.applyAlpha(0.84f, Color.WHITE) :
+                Utils.getColorAttrDefaultColor(mContext, android.R.attr.textColorSecondary);
             mTextColorPrimary = textColor;
             mClockView.setTextColor(textColor);
             if (mTintedIconManager != null) {
@@ -387,12 +380,13 @@ public class QuickStatusBarHeader extends FrameLayout implements
             qqsLP.topMargin = SystemBarUtils.getStatusBarHeight(mContext) + mContext.getResources()
                     .getDimensionPixelSize(R.dimen.qqs_margin_top);
         }
-        mQsHeaderLayout.getLayoutParams().height =
-                Math.max(qsOffsetHeight, mQsHeaderLayout.getMinimumHeight()) +
-                (mHeaderImageEnabled ?
-                resources.getDimensionPixelSize(R.dimen.qs_header_image_offset) : 0);
-        mQsHeaderLayout.setLayoutParams(mQsHeaderLayout.getLayoutParams());
+        mHeaderQsPanel.setLayoutParams(qqsLP);
 
+        ViewGroup.MarginLayoutParams qsHeaderLp = (ViewGroup.MarginLayoutParams) mQsHeaderLayout.getLayoutParams();
+        qsHeaderLp.height = mHeaderImageEnabled && orientation != Configuration.ORIENTATION_LANDSCAPE ?
+                Math.max(qsOffsetHeight, mStatusIconsView.getMinimumHeight()) : 0;
+        qsHeaderLp.setMargins(-50, 0, -50, 0);
+        mQsHeaderLayout.setLayoutParams(qsHeaderLp);
         mQsHeaderLayout.setVisibility(mHeaderImageEnabled ? View.VISIBLE : View.GONE);
 
         updateBatteryMode();
@@ -515,12 +509,6 @@ public class QuickStatusBarHeader extends FrameLayout implements
                 Settings.System.STATUS_BAR_CUSTOM_HEADER, 0,
                 UserHandle.USER_CURRENT) == 1;
         updateResources();
-    }
-
-    // Update color schemes in landscape to use wallpaperTextColor
-    private void updateStatusbarProperties() {
-        boolean shouldUseWallpaperTextColor = !mHeaderImageEnabled;
-        //mClockView.useWallpaperTextColor(shouldUseWallpaperTextColor);
     }
 
     /**
@@ -666,10 +654,6 @@ public class QuickStatusBarHeader extends FrameLayout implements
         mStatusIconsView.setPadding(paddingLeft,
                 mWaterfallTopInset,
                 paddingRight,
-                0);
-        mQsHeaderLayout.setPadding(0,
-                mWaterfallTopInset,
-                0,
                 0);
     }
 

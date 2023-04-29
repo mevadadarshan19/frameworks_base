@@ -13,7 +13,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-			android:color="#000" >
-    <corners android:radius="?android:attr/dialogCornerRadius" />
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <corners android:radius="1dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" android:bottomLeftRadius="@*android:dimen/rounded_corner_radius" android:bottomRightRadius="@*android:dimen/rounded_corner_radius" />
 </shape>
