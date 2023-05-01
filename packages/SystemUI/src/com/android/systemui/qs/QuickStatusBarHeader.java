@@ -355,10 +355,7 @@ public class QuickStatusBarHeader extends FrameLayout implements
         }
         Configuration config = mContext.getResources().getConfiguration();
         if (config.orientation != Configuration.ORIENTATION_LANDSCAPE) {
-            boolean mIsNightMode = (mContext.getResources().getConfiguration().uiMode &
-                Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            int fadeFilter = ColorUtils.blendARGB(Color.TRANSPARENT, mIsNightMode ?
-                Color.BLACK : Color.WHITE, 30 / 100f);
+	    int fadeFilter = ColorUtils.blendARGB(Color.TRANSPARENT, Color.BLACK, 30 / 100f);
             int resId = getResources().getIdentifier("qs_header_image_" +
                 String.valueOf(mHeaderImageValue), "drawable", "com.android.systemui");
             mQsHeaderImageView.setImageResource(resId);
