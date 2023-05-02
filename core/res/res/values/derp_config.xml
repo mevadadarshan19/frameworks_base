@@ -143,7 +143,7 @@
 
          For example, a device with notification and battery lights that supports
          pulsating and RGB control would set this config to 75. -->
-    <integer name="config_deviceLightCapabilities">8</integer>
+    <integer name="config_deviceLightCapabilities">232</integer>
 
     <!-- The list of components which should be automatically disabled for a specific device.
          Note: this MUST not be used to randomly disable components, ask for approval first! -->
