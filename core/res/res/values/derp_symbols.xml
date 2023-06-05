@@ -227,4 +227,7 @@
 
   <!-- Display color inversion availability -->
   <java-symbol type="bool" name="config_displayInversionAvailable" />
+
+  <!-- Default value for QS_TRANSPARENCY -->
+  <java-symbol type="integer" name="config_qs_transparency" />
 </resources>

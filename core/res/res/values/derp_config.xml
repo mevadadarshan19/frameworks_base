@@ -359,4 +359,7 @@
 
   <!-- Display color inversion availability -->
   <bool name="config_displayInversionAvailable">true</bool>
+
+  <!-- Default value for QS_TRANSPARENCY -->
+  <integer name="config_qs_transparency">85</integer>
 </resources>
