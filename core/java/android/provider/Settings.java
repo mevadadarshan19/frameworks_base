@@ -5919,31 +5919,6 @@ public final class Settings {
         public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
 
         /**
-         * Status bar carrier label
-         * 0: Hide
-         * 1: Display on keyguard status bar
-         * 2: Display on Normal status bar
-         * 3: Enabled for both
-         * @hide
-         */
-        @Readable
-        public static final String STATUS_BAR_SHOW_CARRIER = "status_bar_show_carrier";
-
-        /**
-         * custom carrier label. The value is
-         * String.
-         * @hide
-         */
-        @Readable
-        public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
-
-        /**
-         * Whether to enable custom carrier label
-         * @hide
-         */
-        public static final String ENABLE_CUSTOM_CARRIER_LABEL = "enable_custom_carrier_label";
-
-        /**
          * Whether to show battery estimates in QS
          * @hide
          */
