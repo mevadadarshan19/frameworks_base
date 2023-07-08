@@ -5910,13 +5910,6 @@ public final class Settings {
         public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
 
         /**
-         * Whether to show battery estimates in QS
-         * @hide
-         */
-        @Readable
-        public static final String QS_SHOW_BATTERY_ESTIMATE = "qs_show_battery_estimate";
-
-        /**
          * Swap volume buttons on rotation
          * @hide
          */

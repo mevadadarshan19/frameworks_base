@@ -87,7 +87,6 @@ public class SystemSettings {
         Settings.System.DISPLAY_COLOR_MODE,
         Settings.System.ALARM_ALERT,
         Settings.System.NOTIFICATION_LIGHT_PULSE,
-        Settings.System.QS_SHOW_BATTERY_ESTIMATE,
         Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL,
         Settings.System.FLASHLIGHT_ON_CALL,
         Settings.System.FLASHLIGHT_ON_CALL_IGNORE_DND,
